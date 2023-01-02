@@ -1,230 +1,137 @@
-.App {
-    overflow: hidden;
-    width: 100vw;
+.entrance{
     height: 100vh;
+    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
-.entrance {
-    position: relative;
-    height: 80vh;
-    width: 30vw;
-    min-width: 500px;
-    max-width: 650px;
-    padding: 4rem;
-    z-index: 10;
-}
-
-.entrance:before {
-    background: linear-gradient(153.19deg, rgba(251, 251, 251, 0.39) -2.98%, rgba(194, 229, 255, 0.19) 132.51%);
-    position: absolute;
-    content: '';
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: -1;
+.entrance__form{
+    background-color: #F7FAFC;
     border-radius: 25px;
-    box-shadow: 2px 3px 2px #C3E4FD;
-    backdrop-filter: blur(3.5px);
+    overflow: hidden;
+    padding: 4rem;
+    min-height: 800px;
+    max-height: 1000px;
+    min-width: 400px;
+    max-width: 600px;
+    width: 28vw;
+    height: 74vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
-
-.entrance__circle-pink {
-    top: 80%;
-    left: -65%;
-    position: absolute;
-    z-index: -2;
+.entrance__logo-box{
+    height: 20%;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
-
-.entrance__circle-blue {
-    top: 48%;
-    left: 140%;
-    position: absolute;
-    z-index: -2;
+.entrance__logo{
+    font-size: 3.75em;
+    font-weight: 600;
+    color: #2D4047;
+    letter-spacing: 10px;
 }
-
-.entrance__circle-green {
-    top: -40%;
-    left: -45%;
-    position: absolute;
-    z-index: -2;
-}
-
-.entrance__form {
-    height: 100%;
+.entrance__log-box{
+    height: 60%;
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-items: center;
 }
-
-.entrance__logo-log {
+.entrance__log-fields{
+    background-color: white;
+    height: 70%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    box-shadow: 0px 2px 6px #BECFCB;
+    border-radius: 15px;
+}
+.entrance__field-login,.entrance__field-password{
+    height: 40%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.entrance__label-login,.entrance__label-password{
+    color: #2D4047;
+    font-size: 1.75em;
+    font-weight: 600;
+    align-self: flex-start;
+}
+.entrance__input-field-login,.entrance__input-field-password{
+    padding: 0px 10px;
+    font-size: 1.25em;
+    font-weight: 500;
+    color: #2D4047;
+    height: 60px;
+    width: 100%;
+    background-color: #EBF7F3;
+    border-radius: 10px;
+    border: 4px solid #05B98C;
+}
+.entrance__submits-box{
     width: 100%;
     height: 20%;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-}
-
-.entrance__logo-log h1 {
-    font-size: 3.6rem;
-    font-weight: 800;
-    background: linear-gradient(104.36deg, rgba(255, 255, 255, 0.324) -33.77%, rgba(13, 153, 255, 0.54) 180.79%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 2px 2px 6px #A6D9FF;
-    letter-spacing: 0.5rem;
-}
-
-.entrance__fields-log {
-    width: 100%;
-    height: 40%;
-    display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    align-items: flex-start;
-    flex-wrap: nowrap;
-}
-
-.entrance__field-login,
-.entrance__field-password {
-    width: 100%;
-}
-
-.entrance__label-login,
-.entrance__label-password {
-    transform: translateY(-130%) translateX(5%);
-    display: block;
-    font-weight: 500;
-    font-size: 1.8rem;
-    color: #686868;
-    transition-duration: 0.4s;
-    transition-delay: 0s;
-}
-
-#login,
-#password {
-    font-size: 1.4rem;
-    width: 100%;
-    padding: 8px 12px;
-    border-radius: 15px;
-    border: 4px solid #89CDFF;
-    background-color: transparent;
-    box-shadow: 2px 2px 4px #A6D9FF;
-    display: block;
-    transform: scaleY(0);
-    transform-origin: 50% 100%;
-    transition-duration: 0.4s;
-    transition-delay: 0s;
-}
-
-.entrance__label-login::after,
-.entrance__label-password::after {
-    content: '';
-    position: absolute;
-    bottom: -25%;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background-color: #89CDFF;
-    box-shadow: 2px 2px 4px #A6D9FF;
-    transform: translateX(-5%) scaleX(1);
-    transition-duration: 0.4s;
-    transition-delay: 0.4s;
-}
-
-#login:focus,
-#password:focus {
-    transform: scaleY(1);
-    transition-duration: 0.4s;
-    transition-delay: 0.4s;
-}
-
-#login:focus~.entrance__label-login,
-#password:focus~.entrance__label-password {
-    transform: translateY(-300%) translateX(5%);
-    transition-duration: 0.4s;
-    transition-delay: 0.4s;
-}
-
-#login:focus~.entrance__label-login::after,
-#password:focus~.entrance__label-password::after {
-    transform: translateX(-5%) scaleX(0);
-    transition-duration: 0.4s;
-    transition-delay: 0s;
-}
-
-.entrance__chb-log {
-    width: 100%;
-    height: 10%;
-    display: flex;
     justify-content: flex-end;
     align-items: center;
 }
-
-.entrance__label-remember {
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: #686868;
-    transform: translateX(-20%);
-}
-
-#remember {
-    position: relative;
-    opacity: 1;
-}
-
-#remember::after {
-    content: '';
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 25px;
-    height: 25px;
-    display: block;
-    border-radius: 8px;
-    background-color: white;
-    transform: translateX(-25%) translateY(-25%);
-    border: 2px solid #89CDFF;
-    transition-duration: 0.2s;
-    box-shadow: 2px 2px 4px #A6D9FF;
-}
-
-#remember:checked::after {
-    background-color: #89CDFF;
-}
-
-#remember:hover {
-    cursor: pointer;
-}
-
-.entrance__buttons-log {
+.entrance__buttons-fields{
+    height: 80%;
     width: 100%;
-    height: 30%;
     display: flex;
-    justify-content: center;
-    align-items: flex-end;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
-
-.entrance__button-ent {
+.entrance__entry-button{
+    background-color: white;
     width: 100%;
-    height: 4rem;
-    border-radius: 15px;
-    border: 4px solid #89CDFF;
-    background-color: transparent;
-    font-size: 2rem;
+    height: 60px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px #BECFCB;
+    font-size: 2em;
     font-weight: 600;
-    letter-spacing: 0.4rem;
-    color: #89CDFF;
-    box-shadow: 2px 2px 4px #A6D9FF;
+    color:#05B98C;
     transition-duration: 0.4s;
 }
-
-.entrance__button-ent:hover {
-    background-color: #89CDFF;
-    color: white;
+.entrance__entry-button:hover{
+    box-shadow: 0px 4px 6px #a7b6b2;
+    transform: scale(1.05);
+    background-color: #05B98C;
+    color:white;
+}
+.entrance__forgot-password-button{
+    color:#05B98C;
+    font-weight: 600;
+    font-size: 1.35em;
+    align-self: flex-start;
+    position: relative;
+}
+.entrance__forgot-password-button::before{
+    display: block;
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0px;
+    height: 2px;
+    width: 100%;
+    background-color: #05B98C;
+    transform-origin: 50% 100%;
+    transform: scaleX(0);
+    transition-duration: 0.2s;
+}
+.entrance__forgot-password-button:hover::before{
+    transform: scaleX(1);
 }

@@ -1,51 +1,31 @@
 import React from 'react';
 import '../styles/entrance.css'
-import circle_pink from '../images/circle_pink.svg';
-import circle_blue from '../images/circle_blue.svg';
-import circle_green from '../images/circle_green.svg';
-
 
 const Entrance = () => {
     return (
         <div className='entrance'>
-            <img src={circle_pink} alt="o" className='entrance__circle-pink'/>
-            <img src={circle_blue} alt="o" className='entrance__circle-blue'/>
-            <img src={circle_green} alt="o" className='entrance__circle-green'/>
-            <form action="http://localhost:3001/entrance" method='POST' className='entrance__form'>
-                <section className='entrance__logo-log'>
-                    <h1>GIDA</h1>
-                </section>
-                <section className='entrance__fields-log'>
-                    <article className='entrance__field-login'>
-                        <input
-                            type="text"
-                            name="login"
-                            required
-                            id="login" />
-                        <label className='entrance__label-login' htmlFor='login'>Логин</label>
-                    </article>
-                    <article className='entrance__field-password'>
-                        <input
-                            type="password"
-                            name="password"
-                            required
-                            id="password" />
-                        <label className='entrance__label-password' htmlFor='password'>Пароль</label>
-                    </article>
-                </section>
-                <section className='entrance__chb-log'>
-                    <label className='entrance__label-remember' htmlFor='remember'>Запомнить</label>
-                    <input type="checkbox"
-                        name="remember"
-                        id="remember" />
-                </section>
-                <section className='entrance__buttons-log'>
-                    <button
-                        type="submit"
-                        className="entrance__button-ent" >
-                        Вход
-                    </button>
-                </section>
+            <form className='entrance__form' action="#" method='POST'>
+                <div className='entrance__logo-box'>
+                    <h1 className='entrance__logo'>GIDA</h1>
+                </div>
+                <div className='entrance__log-box'>
+                    <div className='entrance__log-fields'>
+                        <div className='entrance__field-login'>
+                            <label htmlFor="input-login" className='entrance__label-login'>Логин</label>
+                            <input type="text" id="input-login" className='entrance__input-field-login' required />
+                        </div>
+                        <div className='entrance__field-password'>
+                            <label htmlFor="input-password" className='entrance__label-password'>Пароль</label>
+                            <input type="password" id="input-password" className='entrance__input-field-password' required />
+                        </div>
+                    </div>
+                </div>
+                <div className='entrance__submits-box'>
+                    <div className='entrance__buttons-fields'>
+                        <button type='submit' className='entrance__entry-button'>Вход</button>
+                        <a href="#" className='entrance__forgot-password-button'>Забыли пароль?</a>
+                    </div>
+                </div>
             </form>
         </div>
     );
