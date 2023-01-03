@@ -12,37 +12,37 @@ const Calendar = () => {
             </div>
             <div className='main__calendar-box'>
                 <div className='main__calendar'>
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
-                    <Сell_dates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
+                    <CellDates month="Январь" number="09" tag="Понедельник" />
                 </div>
             </div>
             <div className='main__data-changer-box'>
@@ -60,7 +60,7 @@ const Calendar = () => {
     );
 }
 
-const Сell_dates = (props) => {
+const CellDates = (props) => {
     return (
         <div className="main__cell-dates">
             <h1 className="main__d-year">{props.month}</h1>

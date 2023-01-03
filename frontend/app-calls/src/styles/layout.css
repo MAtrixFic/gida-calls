@@ -25,6 +25,11 @@ body {
     border-bottom: 2px solid #E7EAEA;
 }
 
+.header__logo-box,
+.header__exit-box {
+    padding: 0px 2vh;
+}
+
 .header__logo {
     font-size: 2.5em;
     font-weight: 600;
@@ -33,7 +38,7 @@ body {
 }
 
 .header__nav-box {
-    padding: 2rem 0px;
+    padding: 2rem 2vh;
     height: 87%;
     width: 100%;
 }
@@ -49,13 +54,15 @@ body {
 
 .header__main-links {
     height: 16%;
-    width: auto;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-.header__main-links > a,.header__link-settings,.header__link-exit{
+.header__main-links>a,
+.header__link-settings,
+.header__link-exit {
     font-weight: 500;
     font-size: 1.75em;
     color: #798A89;
@@ -68,7 +75,38 @@ body {
     align-items: center;
     border-top: 2px solid #E7EAEA;
 }
-.main{
+
+.header__link-home img,
+.header__link-calendar img,
+.header__link-voting img,
+.header__link-settings img,
+.header__link-exit img {
+    width: 30px;
+    height: 30px;
+}
+
+.header__link-home,
+.header__link-calendar,
+.header__link-voting,
+.header__link-settings,
+.header__link-exit {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    gap: 2vh;
+}
+
+.active>.header__link-icon {
+    fill: #05B98C;
+}
+
+.active>.header__link-name {
+    color: #05B98C;
+}
+
+.main {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
