@@ -116,6 +116,12 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    transition-duration: 0.2s;
+}
+
+.main__reset-time-button:hover, .main__change-time-button:hover{
+    color: white;
+    background-color: #05B98C;
 }
 
 .main__ok-change-button{
@@ -129,4 +135,9 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    transition-duration: 0.4s;
+}
+
+.main__ok-change-button:hover{
+    box-shadow: 0px 0px 10px #33BC9C;
 }

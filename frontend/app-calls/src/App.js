@@ -10,9 +10,9 @@ function App() {
     <>
       <Routes>
         <Route path="entrance" element={<Entrance/>}/>
-        <Route path="main" element={<Layout/>}>
+        <Route path="/" element={<Layout/>}>
           <Route path='calendar' element={<Calendar/>}/>
-          <Route path='calendar/cd' element={<CalendarDay/>}/>
+          <Route path='calendar/date/:day/:month/:year' element={<CalendarDay/>}/>
         </Route>
       </Routes>
     </>

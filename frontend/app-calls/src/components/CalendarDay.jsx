@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { DateTime } from 'luxon';
 import '../styles/calendarday.css';
 
+
 const CalendarDay = () => {
+
+    const gotTime = useParams();
+    const [thisTime] = useState(() =>
+        DateTime.local(Number(gotTime.year),
+            Number(gotTime.month),
+            Number(gotTime.day))
+            .toLocal('ru'));
+
     return (
         <>
             <div className='main__date-box'>
                 <div className="main__date-calendar">
-                    <h1>Календарь <span className='main__date-date'>2023</span></h1>
+                    <h1>Календарь <span className='main__date-date'>{thisTime.year}</span></h1>
                 </div>
             </div>
             <div className="main__time-manager-box">
@@ -39,14 +50,12 @@ const CalendarDay = () => {
                     </div>
                 </div>
                 <div className="main__date-now">
-                    <h1 className="main__date-now-month">Январь</h1>
-                    <h1 className="main__date-now-number">09</h1>
-                    <h1 className="main__date-now-tag">Понедельник</h1>
+                    <h1 className="main__date-now-month">{thisTime.monthLong}</h1>
+                    <h1 className="main__date-now-number">{thisTime.toFormat('dd')}</h1>
+                    <h1 className="main__date-now-tag">{thisTime.weekdayLong}</h1>
                 </div>
                 <div className="main__time-manager-buttons">
-                    <button className="main__reset-time-button">
-                        сбросить
-                    </button>
+                    <ResetButton />
                     <ChangeTimeButton />
                     <OkChangeButton />
                 </div>
@@ -58,8 +67,16 @@ const CalendarDay = () => {
 const CellTime = () => {
     return (
         <div className="main__cell-time">
-            <input className='main__time-input' type="text" readOnly value={'**:** - **:**'} />
+            <input className='main__time-input' type="text" readOnly defaultValue={'**:** - **:**'} />
         </div>
+    )
+}
+
+const ResetButton = () => {
+    return (
+        <button className="main__reset-time-button">
+            сбросить
+        </button>
     )
 }
 
