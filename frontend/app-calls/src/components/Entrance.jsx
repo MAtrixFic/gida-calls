@@ -4,7 +4,7 @@ import '../styles/entrance.css'
 const Entrance = () => {
     return (
         <div className='entrance'>
-            <form className='entrance__form' action="#" method='POST'>
+            <form className='entrance__form' action="http://localhost:3001/calls" method='POST' >
                 <div className='entrance__logo-box'>
                     <h1 className='entrance__logo'>GIDA</h1>
                 </div>
@@ -12,11 +12,11 @@ const Entrance = () => {
                     <div className='entrance__log-fields'>
                         <div className='entrance__field-login'>
                             <label htmlFor="input-login" className='entrance__label-login'>Логин</label>
-                            <input type="text" id="input-login" className='entrance__input-field-login' required />
+                            <input name='login' type="text" id="input-login" className='entrance__input-field-login' required />
                         </div>
                         <div className='entrance__field-password'>
                             <label htmlFor="input-password" className='entrance__label-password'>Пароль</label>
-                            <input type="password" id="input-password" className='entrance__input-field-password' required />
+                            <input name='password' type="password" id="input-password" className='entrance__input-field-password' required />
                         </div>
                     </div>
                 </div>
