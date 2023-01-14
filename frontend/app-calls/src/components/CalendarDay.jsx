@@ -18,7 +18,7 @@ const CalendarDay = () => {
     var [callTime, setCallTime] = useState(() => GetData().then(data => setCallTime(data)));
     var refInpValue = useRef({});
     async function GetData() {
-        const prom = await fetch('http://localhost:3001/calls?' + new URLSearchParams({
+        const prom = await fetch('http://localhost:3001/calendar/dynamic?' + new URLSearchParams({
             weekDay: thisTime.weekdayLong,
             day: gotTime.day,
             month: gotTime.month,
@@ -34,6 +34,10 @@ const CalendarDay = () => {
 
     const ReloadPage = () => {
         nav(0);
+    }
+
+    function ResetAllTime() {
+        setCallTime([]);
     }
 
     function ToCalendar() {
@@ -79,8 +83,12 @@ const CalendarDay = () => {
                 </div>
                 <DateNow _thisTime={thisTime} />
                 <div className="main__time-manager-buttons">
-                    <ControlButton method={ReloadPage} CN='main__reset-time-button' text='сбросить' />
-                    <ControlButton method={GiveAccess} CN='main__change-time-button' text='изменить' />
+                    <div className="main__static-dynamic-box">
+                        <ControlButton method={ReloadPage} CN='main__standart-time-button' text='static' />
+                        <ControlButton method={ReloadPage} CN='main__standart-time-button' text='dynamic' />
+                    </div>
+                    <ControlButton method={ResetAllTime} CN='main__standart-time-button' text='сбросить' />
+                    <ControlButton method={GiveAccess} CN='main__standart-time-button' text='изменить' />
                     <ControlButton method={ToCalendar} CN='main__ok-change-button' text='подтвердить' />
                 </div>
             </div>

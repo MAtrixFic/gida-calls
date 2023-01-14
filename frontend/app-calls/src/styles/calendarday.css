@@ -43,7 +43,9 @@
     font-weight: 600;
     color: #05B98C;
 }
-.main__cell-time_disabled, .main__cell-time_abled {
+
+.main__cell-time_disabled,
+.main__cell-time_abled {
     background-color: #F0F4F6;
     border-radius: 10px;
     display: grid;
@@ -52,6 +54,7 @@
     align-items: center;
     transition-duration: 0.2s;
 }
+
 .main__cell-time_disabled {
     background-color: #F0F4F6;
     border-radius: 10px;
@@ -64,11 +67,13 @@
     outline: 2px solid #EBF7F3;
 }
 
-.main__cell-time_abled .main__time-input, .main__cell-time_abled .main__cell-time-sign {
+.main__cell-time_abled .main__time-input,
+.main__cell-time_abled .main__cell-time-sign {
     color: #05B98C;
 }
 
-.main__time-input, .main__cell-time-sign {
+.main__time-input,
+.main__cell-time-sign {
     width: 100%;
     font-weight: 600;
     font-size: 1.5rem;
@@ -115,20 +120,23 @@
     background-color: white;
     border-radius: 25px;
     box-shadow: 0px 2px 6px #BECFCB;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    gap: 1vh;
     padding: 4vh;
 }
-
-.main__reset-time-button,
-.main__change-time-button {
+.main__static-dynamic-box{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    gap: 1vh;
+}
+.main__standart-time-button {
     background-color: transparent;
     border-radius: 10px;
     border: 4px solid #05B98C;
-    height: 30%;
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 600;
     color: #05B98C;
     display: flex;
@@ -137,9 +145,7 @@
     align-items: center;
     transition-duration: 0.2s;
 }
-
-.main__reset-time-button:hover,
-.main__change-time-button:hover {
+.main__standart-time-button:hover {
     color: white;
     background-color: #05B98C;
 }
@@ -147,8 +153,7 @@
 .main__ok-change-button {
     background-color: #EBF7F3;
     border-radius: 10px;
-    height: 30%;
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 600;
     color: #05B98C;
     display: flex;

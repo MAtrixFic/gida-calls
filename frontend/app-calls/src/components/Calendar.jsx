@@ -59,7 +59,7 @@ const CellDates = (props) => {
     const time = props.time;
     const index = props.index;
     const timeToday = time.minus({ days: time.day - (index + 1) })
-    const link = `date/${timeToday.day}/${timeToday.month}/${timeToday.year}`;
+    const link = `date/${timeToday.toFormat('dd')}/${timeToday.toFormat('MM')}/${timeToday.year}`;
     if (DateTime.local().setLocale('ru').toFormat('yyyy-MM-dd') === timeToday.toFormat('yyyy-MM-dd')) {
         return (
             <Link className={"main__cell-dates-now"} to={link}>
