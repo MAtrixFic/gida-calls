@@ -4,45 +4,49 @@ const Calls = require('./dataWork');
 const schema = mongoose.Schema;
 const router = exp.Router()
 
-const schemaCallsStatic = new schema({
-    name: String,
-    time: {
-        first: Array,
-        second: Array
-    }
-});
+const schemas = {
+    static: new schema({
+        name: String,
+        time: {
+            first: Array,
+            second: Array
+        }
+    }),
+    dynamic: new schema({
+        date: String,
+        time: {
+            first: Array,
+            second: Array
+        }
+    })
+}
 
-const schemaCallsDynamic = new schema({
-    date: String,
-    time: {
-        first: Array,
-        second: Array
-    }
-});
+const CallsOBJ = {
+    static: new Calls('mongodb://localhost:27017/Calls', schemas.static, 'static', Calls.collectionsName.static),
+    dynamic: new Calls('mongodb://localhost:27017/Calls', schemas.dynamic, 'dynamic', Calls.collectionsName.dynamic) 
+}
 
-const staticCalls = new Calls('mongodb://localhost:27017/Calls', schemaCallsStatic, 'static', Calls.collectionsName.static);
-const dynamicCalls = new Calls('mongodb://localhost:27017/Calls', schemaCallsDynamic, 'dynamic', Calls.collectionsName.dynamic);
 
-async function GetData(calls = Calls, whatToFind) {
+async function GetData(calls = Calls, whatToFind = {}) {
     const result = await calls.ConnectToFind(whatToFind);
     return await result;
 }
 
 router.get('/static', (req, res, next) => {
     console.log(req.query)
-    GetData(staticCalls, { name: req.query.weekDay }).then(data => res.send(data));
+    GetData(CallsOBJ.static, { name: req.query.weekDay }).then(data => res.send(data));
 });
 
 router.get('/dynamic', (req, res) => {
     const { weekDay, day, month, year } = req.query;
-    GetData(dynamicCalls, { date: `${day}.${month}.${year}` }).then(data => {
-        if (data === null) {
-            console.log(data);
-            GetData(staticCalls, { name: weekDay }).then(data => res.send(data));
+    GetData(CallsOBJ.dynamic, { date: `${day}.${month}.${year}` }).then(dataD => {
+        if (dataD === null) {
+            console.log(dataD, 'static');
+            GetData(CallsOBJ.static, { name: weekDay }).then(dataS => res.send(dataS));
         }
         else {
-            console.log(data);
-            res.send(data)
+            console.log(dataD, 'dynamic');
+            res.send(dataD)
         }
     });
 });

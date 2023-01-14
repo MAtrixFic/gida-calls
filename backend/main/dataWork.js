@@ -3,9 +3,9 @@ mongoose.set('strictQuery', false);
 
 class Calls {
     static collectionsName = {
-        'static' : 'staticDays',
-        'dynamic' : 'dynamicDays',
-        'people' : 'people'
+        static : 'staticDays',
+        dynamic : 'dynamicDays',
+        people : 'people'
     }
 
     constructor(dbPath, schema, modelName, collectionName) {
