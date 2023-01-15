@@ -22,9 +22,9 @@ class Calls {
         return await result;
     }
 
-    async ConnectToWrite(what) {
+    async ConnectToWrite(filter, what) {
         await mongoose.connect(this.dbPath);
-        await this.callModel.create(what);
+        await this.callModel.replaceOne(filter, what, {upsert: true, strict: false});
     }
 }
 
