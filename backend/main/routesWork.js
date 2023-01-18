@@ -10,14 +10,16 @@ const schemas = {
         time: {
             first: Array,
             second: Array
-        }
+        },
+        type: String
     }),
     dynamic: new schema({
         date: String,
         time: {
             first: Array,
             second: Array
-        }
+        },
+        type: String
     })
 }
 
@@ -25,7 +27,6 @@ const CallsOBJ = {
     static: new Calls('mongodb://localhost:27017/Calls', schemas.static, 'static', Calls.collectionsName.static),
     dynamic: new Calls('mongodb://localhost:27017/Calls', schemas.dynamic, 'dynamic', Calls.collectionsName.dynamic)
 }
-
 
 async function GetData(calls = Calls, whatToFind = {}) {
     const result = await calls.ConnectToFind(whatToFind);
@@ -41,14 +42,15 @@ router.get('/static', (req, res, next) => {
 });
 
 router.get('/dynamic', (req, res) => {
+    console.log(req.query)
     const { weekDay, day, month, year } = req.query;
     GetData(CallsOBJ.dynamic, { date: `${day}.${month}.${year}` }).then(dataD => {
         if (dataD === null) {
-            console.log('static');
-            GetData(CallsOBJ.static, { name: weekDay }).then(dataS => res.send(dataS));
+            GetData(CallsOBJ.static, { name: weekDay }).then(dataS => {
+                res.send(dataS);
+            });
         }
         else {
-            console.log('dynamic');
             res.send(dataD)
         }
     });
@@ -61,7 +63,8 @@ router.put('/dynamic', (req, res) => {
         time: {
             first: [...first.split(',')],
             second: [...second.split(',')]
-        }
+        },
+        type: 'dynamic'
     })
     res.sendStatus(200);
 })

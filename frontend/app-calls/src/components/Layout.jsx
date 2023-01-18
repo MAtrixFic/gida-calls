@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
+import CopyTimeContext from './modifications/CopyTimeContext';
 import '../styles/layout.css';
 
 import home from '../images/home.svg';
@@ -9,6 +10,9 @@ import settings from '../images/settings.svg';
 import exit from '../images/exit.svg';
 
 const Layout = () => {
+    var [copyTime, setCopyTime] = useState(()=>{
+        return {first: [], second:[]}
+    });
     return (
         <>
             <header className='header'>
@@ -30,7 +34,9 @@ const Layout = () => {
                 </div>
             </header>
             <main className='main'>
+                <CopyTimeContext.Provider value={{copyTime, setCopyTime}}>
                 <Outlet />
+                </CopyTimeContext.Provider>
             </main>
         </>
     );

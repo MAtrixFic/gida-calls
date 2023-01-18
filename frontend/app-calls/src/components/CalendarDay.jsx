@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import CellTime from './modifications/CellTime';
+import CopyTimeContext from './modifications/CopyTimeContext';
+import TimeBlock from './modifications/TimeBlock';
+import DateNow from './modifications/DateNow';
+import ControlButton from './modifications/ControlButton';
 
 import '../styles/calendarday.css';
 
@@ -15,48 +19,91 @@ const CalendarDay = () => {
             .toLocal('ru'));
 
     var [accessToWrite, setAccessToWrite] = useState(() => false); //доступ к изменению полей
-    var [staticTime, setStaticTime] = useState();//обычное расписание
-    var [dynamicTime, setDynamicTime] = useState();//измененное расписание
-    var refInpValue = useRef({first:{}, second:{}});//ссылка на поля инпут
-    var [callTime, setCallTime] = useState(() => GetData('http://localhost:3001/calendar/dynamic?',
-        {
-            weekDay: thisTime.weekdayLong,
-            day: gotTime.day,
-            month: gotTime.month,
-            year: gotTime.year
-        }).then(data => setCallTime(data)));//получение расписания
+    var refInpValue = useRef({ first: {}, second: {} });//ссылка на поля инпут
+    var [gettingData, setGettingData] = useState(() => GetData('dynamic').then(data => setGettingData(data)));//получение расписания
+    var [timeList, setTimeList] = useState();
+    var { copyTime, setCopyTime } = useContext(CopyTimeContext);
 
-    async function GetData(url, params = null, reqInit = {}) {
-        const prom = await fetch(url + new URLSearchParams(params), reqInit);
+    useEffect(() => {
+        setTimeList(gettingData['time'])
+    }, [gettingData])
+
+    useEffect(() => {
+        console.log(copyTime, 'copyTime')
+        console.log(timeList, 'timeList')
+    }, [timeList])
+
+    function AddCellTime(number = '') {
+        if (timeList[number].length < 8) {
+            var prevStateOfTimeList = timeList;
+            prevStateOfTimeList[number].push('00:00-00:00');
+            ResetAllTime();
+            setTimeList(prev => Object.assign(prev, prevStateOfTimeList))
+        }
+    }
+
+    function RemoveCellTime(number = '') {
+        if (timeList[number].length > 0) {
+            var prevStateOfTimeList = timeList;
+            ResetAllTime();
+            prevStateOfTimeList[number].pop();
+            setTimeList(prev => Object.assign(prev, prevStateOfTimeList))
+        }
+    }
+
+    function CopyTime() {
+        let timeObj = {
+            first: [],
+            second: []
+        }
+        CreateACellTime(timeObj, 'first');
+        CreateACellTime(timeObj, 'second');
+        setCopyTime(timeObj);
+    }
+
+    function PastTime() {
+        setTimeList(copyTime);
+    }
+
+    async function GetData(type = 'dynamic', update = false) {
+        if (update) setTimeList([]);
+        let prom;
+        if (type === 'static') {
+            prom = await fetch(`http://localhost:3001/calendar/${type}?` + new URLSearchParams({
+                weekDay: thisTime.weekdayLong
+            }));
+        }
+        else if (type === 'dynamic') {
+            prom = await fetch(`http://localhost:3001/calendar/${type}?` + new URLSearchParams({
+                weekDay: thisTime.weekdayLong,
+                day: gotTime.day,
+                month: gotTime.month,
+                year: gotTime.year
+            }));
+        }
         return await prom.json();
     }
 
-    useEffect(() => {
-        setStaticTime(callTime?.time);
-        setDynamicTime(callTime?.time);
-    }, [callTime])
-
-    const ReloadPage = () => {
-        nav(0);
-    }
-
     function ResetAllTime() {
-        setCallTime([]);
+        setTimeList({
+            first: [],
+            second: []
+        });
     }
 
     function GiveAccess() {
         setAccessToWrite(!accessToWrite);
     }
 
-    function CreateACellTime(obj, group){
-        for (let i = 0; i < Object.keys(refInpValue.current[group]).length / 4; i++){
+    function CreateACellTime(obj, group) {
+        for (let i = 0; i < timeList[group].length; i++) {
             let timeEl = "";
-            for (let j = 0; j < 4; j++){
-                timeEl += refInpValue.current[group][`${i+1}_${j+1}`]?.value
-                if(j == 0 || j == 2){
+            for (let j = 0; j < 4; j++) {
+                timeEl += refInpValue.current[group][`${i + 1}_${j + 1}`]?.value
+                if (j === 0 || j === 2) {
                     timeEl += ":"
                 }
-                else if(j == 1){
+                else if (j === 1) {
                     timeEl += "-"
                 }
             }
@@ -68,7 +115,7 @@ const CalendarDay = () => {
         let dataOBJ = {
             date: `${gotTime.day}.${gotTime.month}.${gotTime.year}`,
             first: [],
-            second: []
+            second: [],
         };
         CreateACellTime(dataOBJ, 'first')
         CreateACellTime(dataOBJ, 'second')
@@ -86,13 +133,17 @@ const CalendarDay = () => {
             <div className='main__date-box'>
                 <div className="main__date-calendar">
                     <h1>Календарь <span className='main__date-date'>{thisTime.year}</span></h1>
+                    <button onClick={CopyTime}>Copy</button>
+                    <button disabled={(timeList?.first?.length === 0 && timeList?.first?.length === 0) ? false : true} onClick={PastTime}>Past</button>
                 </div>
             </div>
             <div className="main__time-manager-box">
                 <div className="main__time-manager">
                     <div className="main__first-time-box">
-                        <TimeBlock timeBlockName={'Первая смена'} access={accessToWrite} />
-                        {staticTime?.['first'].map((v, i) => <CellTime
+                        <TimeBlock timeBlockName={'Первая смена'} access={accessToWrite}
+                            func_01={() => AddCellTime('first')}
+                            func_02={() => RemoveCellTime('first')} />
+                        {timeList?.['first']?.map((v, i) => <CellTime
                             callValue={v}
                             ref={refInpValue}
                             access={accessToWrite}
@@ -101,8 +152,10 @@ const CalendarDay = () => {
                             key={i} />)}
                     </div>
                     <div className="main__second-time-box">
-                        <TimeBlock timeBlockName={'Вторая смена'} access={accessToWrite} />
-                        {staticTime?.['second'].map((v, i) => <CellTime
+                        <TimeBlock timeBlockName={'Вторая смена'} access={accessToWrite}
+                            func_01={() => AddCellTime('second')}
+                            func_02={() => RemoveCellTime('second')} />
+                        {timeList?.['second']?.map((v, i) => <CellTime
                             callValue={v}
                             ref={refInpValue}
                             access={accessToWrite}
@@ -114,47 +167,16 @@ const CalendarDay = () => {
                 <DateNow _thisTime={thisTime} />
                 <div className="main__time-manager-buttons">
                     <div className="main__static-dynamic-box">
-                        <ControlButton method={ReloadPage} CN='main__standart-time-button' text='static' />
-                        <ControlButton method={ReloadPage} CN='main__standart-time-button' text='dynamic' />
+                        <ControlButton method={() => GetData('static', true).then(data => setGettingData(data))} CN='main__standart-time-button' text='static' />
+                        <ControlButton method={() => GetData('dynamic', true).then(data => setGettingData(data))} CN='main__standart-time-button' text='dynamic' />
                     </div>
                     <ControlButton method={ResetAllTime} CN='main__standart-time-button' text='сбросить' />
                     <ControlButton method={GiveAccess} CN='main__standart-time-button' text='изменить' />
-                    <ControlButton method={() => SendDate().then(()=>nav('/calendar'))} CN='main__ok-change-button' text='подтвердить' />
+                    <ControlButton method={() => SendDate().then(() => nav('/calendar'))} CN='main__ok-change-button' text='подтвердить' />
                 </div>
             </div>
         </>
     );
-}
-
-function TimeBlock({ timeBlockName, func_01, func_02, access }) {
-    return (
-        <div className="main__time-block">
-            <button className="main__time-cell-button-blus-minus"
-                onClick={func_01}>+</button>
-            <h1>{timeBlockName}</h1>
-            <button className="main__time-cell-button-blus-minus"
-                onClick={func_02}>-</button>
-        </div>
-    )
-}
-
-function DateNow({ _thisTime }) {
-    return (
-        <div className="main__date-now">
-            <h1 className="main__date-now-month">{_thisTime.monthLong}</h1>
-            <h1 className="main__date-now-number">{_thisTime.toFormat('dd')}</h1>
-            <h1 className="main__date-now-tag">{_thisTime.weekdayLong}</h1>
-        </div>
-    )
-}
-
-function ControlButton(props) {
-    return (
-        <button className={props.CN}
-            onClick={props.method}>
-            {props.text}
-        </button>
-    )
 }
 
 export default CalendarDay;
