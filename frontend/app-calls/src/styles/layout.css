@@ -68,6 +68,10 @@ body {
     color: #798A89;
 }
 
+.header__link-exit{
+    background-color: transparent;
+}
+
 .header__exit-box {
     height: 6.5vh;
     width: 100%;

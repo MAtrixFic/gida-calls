@@ -25,7 +25,7 @@ const Calendar = () => {
     var [daysCount, setDaysCount] = useState(() => time.daysInMonth);
 
     useEffect(() => {
-        setDaysCount(daysCount = time.daysInMonth);
+        setDaysCount(time.daysInMonth)
     }, [time])
 
     return (

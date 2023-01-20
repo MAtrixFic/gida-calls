@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import CellTime from './modifications/CellTime';
-import CopyTimeContext from './modifications/CopyTimeContext';
 import TimeBlock from './modifications/TimeBlock';
 import DateNow from './modifications/DateNow';
 import ControlButton from './modifications/ControlButton';
 
 import '../styles/calendarday.css';
-
-const CalendarDay = () => {
+const CalendarDay = () => {    
     const nav = useNavigate();
     const gotTime = useParams();
     const [thisTime] = useState(() =>
@@ -22,16 +20,10 @@ const CalendarDay = () => {
     var refInpValue = useRef({ first: {}, second: {} });//ссылка на поля инпут
     var [gettingData, setGettingData] = useState(() => GetData('dynamic').then(data => setGettingData(data)));//получение расписания
     var [timeList, setTimeList] = useState();
-    var { copyTime, setCopyTime } = useContext(CopyTimeContext);
 
     useEffect(() => {
         setTimeList(gettingData['time'])
     }, [gettingData])
-
-    useEffect(() => {
-        console.log(copyTime, 'copyTime')
-        console.log(timeList, 'timeList')
-    }, [timeList])
 
     function AddCellTime(number = '') {
         if (timeList[number].length < 8) {
@@ -58,11 +50,11 @@ const CalendarDay = () => {
         }
         CreateACellTime(timeObj, 'first');
         CreateACellTime(timeObj, 'second');
-        setCopyTime(timeObj);
+        localStorage.copy = JSON.stringify(timeObj);
     }
 
     function PastTime() {
-        setTimeList(copyTime);
+        setTimeList(JSON.parse(localStorage.copy));
     }
 
     async function GetData(type = 'dynamic', update = false) {
@@ -92,7 +84,7 @@ const CalendarDay = () => {
     }
 
     function GiveAccess() {
-        setAccessToWrite(!accessToWrite);
+        setAccessToWrite(prev => !prev);
     }
 
     function CreateACellTime(obj, group) {
@@ -130,6 +122,7 @@ const CalendarDay = () => {
 
     return (
         <>
+            {Boolean(localStorage.authorized) === false && <Navigate to='/entrance' replace={true}/>}
             <div className='main__date-box'>
                 <div className="main__date-calendar">
                     <h1>Календарь <span className='main__date-date'>{thisTime.year}</span></h1>

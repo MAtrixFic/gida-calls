@@ -1,6 +1,6 @@
 const exp = require('express')
 const mongoose = require('mongoose');
-const Calls = require('./dataWork');
+const Calls = require('../dataWork');
 const schema = mongoose.Schema;
 const router = exp.Router()
 
@@ -68,6 +68,5 @@ router.put('/dynamic', (req, res) => {
     })
     res.sendStatus(200);
 })
-
 
 module.exports = router;

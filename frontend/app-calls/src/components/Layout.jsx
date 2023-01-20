@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
-import CopyTimeContext from './modifications/CopyTimeContext';
 import '../styles/layout.css';
 
 import home from '../images/home.svg';
@@ -10,9 +9,12 @@ import settings from '../images/settings.svg';
 import exit from '../images/exit.svg';
 
 const Layout = () => {
-    var [copyTime, setCopyTime] = useState(()=>{
-        return {first: [], second:[]}
-    });
+    function Exit() {
+        localStorage.clear();
+        localStorage.setItem('authorized', false)
+        console.log(localStorage)
+    }
+
     return (
         <>
             <header className='header'>
@@ -30,13 +32,14 @@ const Layout = () => {
                     </nav>
                 </div>
                 <div className='header__exit-box'>
-                    <LinkComponent where="entrance" objClassName='header__link-exit' svgIcon={exit} nameLink='Выход' />
+                    <NavLink to='/entrance' className={'header__link-exit'} onClick={Exit}>
+                        <img className='header__link-icon' src={exit} alt="*" />
+                        <h1 className='header__link-name'>{'Выход'}</h1>
+                    </NavLink>
                 </div>
             </header>
             <main className='main'>
-                <CopyTimeContext.Provider value={{copyTime, setCopyTime}}>
                 <Outlet />
-                </CopyTimeContext.Provider>
             </main>
         </>
     );
