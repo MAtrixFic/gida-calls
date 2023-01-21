@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { useParams, useNavigate, Navigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate} from 'react-router-dom';
 import { DateTime } from 'luxon';
 import CellTime from './modifications/CellTime';
 import TimeBlock from './modifications/TimeBlock';
@@ -105,7 +105,7 @@ const CalendarDay = () => {
 
     async function SendDate() {
         let dataOBJ = {
-            date: `${gotTime.day}.${gotTime.month}.${gotTime.year}`,
+            date: `${gotTime.year}-${gotTime.month}-${gotTime.day}`,
             first: [],
             second: [],
         };
@@ -122,7 +122,6 @@ const CalendarDay = () => {
 
     return (
         <>
-            {Boolean(localStorage.authorized) === false && <Navigate to='/entrance' replace={true}/>}
             <div className='main__date-box'>
                 <div className="main__date-calendar">
                     <h1>Календарь <span className='main__date-date'>{thisTime.year}</span></h1>

@@ -8,7 +8,7 @@ body {
 .header {
     height: 100vh;
     width: 14vw;
-    min-width: 200px;
+    min-width: 120px;
     max-width: 400px;
     border-right: 2px solid #E7EAEA;
     display: flex;
@@ -30,7 +30,7 @@ body {
 }
 
 .header__logo {
-    font-size: 2.5em;
+    font-size: calc(22 * (100vw / 1080));
     font-weight: 600;
     color: #2D4047;
     letter-spacing: 2px;
@@ -63,8 +63,7 @@ body {
 .header__main-links>a,
 .header__link-settings,
 .header__link-exit {
-    font-weight: 500;
-    font-size: 1.75em;
+    font-size: calc(14 * (100vw / 1080));
     color: #798A89;
 }
 
@@ -85,7 +84,7 @@ body {
 .header__link-voting img,
 .header__link-settings img,
 .header__link-exit img {
-    width: 30px;
+    width: calc(18 * (100vw / 1080));
     height: 30px;
 }
 
@@ -100,7 +99,7 @@ body {
     grid-template-columns: 30px 1fr;
     grid-template-rows: 5vh;
     align-items: center;
-    gap: 2vh;
+    gap: 1.4vh;
     transition-duration: 0.4s;
 }
 

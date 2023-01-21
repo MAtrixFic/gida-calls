@@ -1,28 +1,22 @@
 const express = require('express');
-const cors = require('cors');
-const calendarRouter = require('./Routes/routesCalendar');
-const entRouter = require('./Routes/routesEntrance');
 const server = express();
+const {PORT, URLENCODER, CORSES} = require('./mainOptions')
+const calendarRouter = require('./Routes/routesCalendar');
 const { DateTime } = require('luxon');
+const Calls = require('./DataWork/calls')
 
-
-const port = 3001;
-const urlencode = express.urlencoded({ extended: true });
-
-
-server.use(cors({
-    origin: 'http://localhost:3000',
-}));
-server.use(urlencode);
-server.use('/entrance', entRouter);
+server.use(CORSES);
+server.use(URLENCODER);
 server.use('/calendar', calendarRouter);
 
-server.listen(port, () => {
+server.listen(PORT, () => {
     console.log("server has been started");
-    setInterval(()=>{
+    setInterval(() => {
         let now = DateTime.local().toLocal('ru');
-        if((now.toFormat('HH:mm') === '23:00')){
+        if ((now.toFormat('HH:mm') === '22:00')) {
             console.log('wake up')
+            const rem = new Calls(Calls.Schemas.dynamic, 'dynamic', Calls.collectionsName.dynamic)
+            rem.ConnectToRemove()
         }
-    },50000)
-})
+    }, 50000)
+});

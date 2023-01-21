@@ -41,7 +41,7 @@
     background-color: white;
     border-radius: 5px;
     color: #05B98C;
-    font-size: 2rem;
+    font-size: calc(14 * (100vw / 1080));
     border: 2px solid #05B98C;
     transition-duration: 0.2s;
 }
@@ -57,7 +57,7 @@
     align-self: center;
     grid-column: 2/4;
     text-align: center;
-    font-size: 1.75rem;
+    font-size: calc(14 * (100vw / 1080));
     font-weight: 600;
     color: #05B98C;
 }
@@ -107,11 +107,27 @@
     }
 }
 
+@keyframes killing {
+    0% {
+        transform-origin: 50% 50%;
+        transform: scaleX(1);
+    }
+
+    100% {
+        transform: scaleX(0);
+    }
+}
+.destroing{
+    animation-name: killing;
+    animation-duration: 0.2s;
+    animation-fill-mode: backwards;
+}
+
 .main__time-input,
 .main__cell-time-sign {
     width: 100%;
     font-weight: 600;
-    font-size: 1.5rem;
+    font-size: calc(12 * (100vw / 1080));
     background-color: transparent;
     text-align: center;
     transition-duration: 0.2s;
@@ -131,19 +147,19 @@
 }
 
 .main__date-now-month {
-    font-size: 1.75rem;
+    font-size: calc(16 * (100vw / 1080));
     font-weight: 400;
     color: #BCC3C3;
 }
 
 .main__date-now-number {
-    font-size: 7.5rem;
+    font-size: calc(60 * (100vw / 1080));
     font-weight: 500;
     color: #05B98C;
 }
 
 .main__date-now-tag {
-    font-size: 2.25rem;
+    font-size: calc(18 * (100vw / 1080));
     font-weight: 500;
     color: #7F8C8C;
 }
@@ -172,7 +188,7 @@
     background-color: transparent;
     border-radius: 10px;
     border: 3px solid #05B98C;
-    font-size: 2rem;
+    font-size: calc(16 * (100vw / 1080));
     font-weight: 600;
     color: #05B98C;
     display: flex;
@@ -190,7 +206,7 @@
 .main__ok-change-button {
     background-color: #EBF7F3;
     border-radius: 10px;
-    font-size: 2rem;
+    font-size: calc(16 * (100vw / 1080));
     font-weight: 600;
     color: #05B98C;
     display: flex;

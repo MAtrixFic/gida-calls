@@ -14,19 +14,41 @@ const Calendar = () => {
     }
 
     const PlusMonth = () => {
+        if(tap === true)
         setTime(time.plus({ month: 1 }))
     }
 
     const MinusMonth = () => {
+        if(tap === true)
         setTime(time.minus({ month: 1 }))
     }
 
     var [time, setTime] = useState(() => GetTime());
     var [daysCount, setDaysCount] = useState(() => time.daysInMonth);
+    var [tap, setTap] = useState(true);
 
     useEffect(() => {
-        setDaysCount(time.daysInMonth)
+        setDaysCount(0);
+        setTap(prev => !prev);
+        setTimeout(() => {
+            setTap(prev => !prev)
+            setDaysCount(prev => {
+                if(prev === 0)
+                setDaysCount(prev + time.daysInMonth);
+            })
+        }, 100)
     }, [time])
+
+    function keyInput(event){
+        switch(event.key){
+            case 'ArrowLeft':
+                MinusMonth();
+                break;
+            case 'ArrowRight':
+                PlusMonth();
+                break;
+        }
+    }
 
     return (
         <>
@@ -37,10 +59,12 @@ const Calendar = () => {
             </div>
             <div className='main__calendar-box'>
                 <div className='main__calendar'>
-                    {[...new Array(daysCount)].map((v, i) => <CellDates index={i} time={time} key={i} />)}
+                    {[...new Array(daysCount)].map((v, i) => {
+                        return <CellDates index={i} time={time} key={i}/>
+                    })}
                 </div>
             </div>
-            <div className='main__data-changer-box'>
+            <div className='main__data-changer-box' onKeyDown={keyInput}>
                 <div className="main__data-changer-body">
                     <button className="main__button-change-left" onClick={MinusMonth}>
                         <img src={arrow} alt="<" />
@@ -62,7 +86,7 @@ const CellDates = (props) => {
     const link = `date/${timeToday.toFormat('dd')}/${timeToday.toFormat('MM')}/${timeToday.year}`;
     if (DateTime.local().setLocale('ru').toFormat('yyyy-MM-dd') === timeToday.toFormat('yyyy-MM-dd')) {
         return (
-            <Link className={"main__cell-dates-now"} to={link}>
+            <Link className={`main__cell-dates-now`} to={link}>
                 <h1 className="main__d-year">{time.toFormat('LLLL')}</h1>
                 <h1 className="main__d-number-now">{timeToday.toFormat('dd')}</h1>
                 <h1 className="main__d-tag">{timeToday.weekdayLong}</h1>
@@ -71,7 +95,7 @@ const CellDates = (props) => {
     }
     else {
         return (
-            <Link className={"main__cell-dates"} to={link}>
+            <Link className={`main__cell-dates`} to={link}>
                 <h1 className="main__d-year">{time.toFormat('LLLL')}</h1>
                 <h1 className="main__d-number">{timeToday.toFormat('dd')}</h1>
                 <h1 className="main__d-tag">{timeToday.weekdayLong}</h1>
