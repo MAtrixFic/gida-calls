@@ -1,30 +1,30 @@
 import React, { useRef, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../styles/entrance.css'
 
 const Entrance = () => {
     var nickRef = useRef();
     var passwordRef = useRef();
+    const nav = useNavigate()
     console.log(localStorage)
     async function SendUserInfo(event) {
         await Request({
-            nick: nickRef.current.value,
+            username: nickRef.current.value,
             password: passwordRef.current.value
         }).then(data => {
-            if(data.error === 'ups'){
-                alert('неправильный пароль или логин')
+            if (data.status === 'authenticated') {
+                console.log(data.status)
+                localStorage.setItem('auth', data.res)
+                localStorage.setItem('status', 'authorized')
+                nav('/calendar');
             }
             else{
-                console.log(data)
-                localStorage.nick = data.nick;
-                localStorage.authorized = true;
-                console.log(localStorage)
+                alert(data.res)
             }
         });
     }
-
     async function Request(query = {}) {
-        const res = await fetch('http://localhost:3001/entrance/send',{
+        const res = await fetch('http://localhost:3001/auth/log', {
             method: 'POST',
             body: new URLSearchParams(query),
             headers: {
@@ -34,6 +34,14 @@ const Entrance = () => {
         return await res.json();
     }
 
+    function ShowPassword() {
+        if (passwordRef.current.type === 'password') {
+            passwordRef.current.type = 'text';
+        }
+        else if (passwordRef.current.type === 'text') {
+            passwordRef.current.type = 'password'
+        }
+    }
 
 
     return (
@@ -49,8 +57,8 @@ const Entrance = () => {
                             <input ref={nickRef} name='login' type="text" id="input-login" className='entrance__input-field-login' required />
                         </div>
                         <div className='entrance__field-password'>
-                            <label htmlFor="input-password" className='entrance__label-password'>Пароль</label>
-                            <input ref={passwordRef} name='password' type="password" id="input-password" className='entrance__input-field-password' required />
+                            <label onClick={ShowPassword} htmlFor="input-password" className='entrance__label-password'>Пароль</label>
+                            <input ref={passwordRef} name='password' type="text" id="input-password" className='entrance__input-field-password' required />
                         </div>
                     </div>
                 </div>
@@ -61,7 +69,7 @@ const Entrance = () => {
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
     );
 }
 

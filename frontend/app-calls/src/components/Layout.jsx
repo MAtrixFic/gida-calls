@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Outlet, NavLink } from 'react-router-dom';
+import React from 'react';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import '../styles/layout.css';
 
 import home from '../images/home.svg';
@@ -9,10 +9,20 @@ import settings from '../images/settings.svg';
 import exit from '../images/exit.svg';
 
 const Layout = () => {
+    const nav = useNavigate()
+    
     function Exit() {
-        localStorage.clear();
-        localStorage.setItem('authorized', false)
-        console.log(localStorage)
+        if(localStorage.status === 'authorized'){
+            let exitM = window.confirm('Вы действительно хотите выйти из учетной записи?');
+            if(exitM){
+                localStorage.setItem('status', 'unauthorized');
+                localStorage.setItem('auth', 'nothing')
+                nav('/auth/log')
+            }
+        }
+        else{
+            nav('/auth/log')
+        }
     }
 
     return (
@@ -25,17 +35,17 @@ const Layout = () => {
                     <nav className='header__nav'>
                         <div className='header__main-links'>
                             <LinkComponent where="home" objClassName='header__link-home' svgIcon={home} nameLink='Домой' />
-                            <LinkComponent where="calendar" objClassName='header__link-calendar' svgIcon={calendar} nameLink='Календарь' />
+                            <LinkComponent where="/calendar" objClassName='header__link-calendar' svgIcon={calendar} nameLink='Календарь' />
                             <LinkComponent where="voting" objClassName='header__link-voting' svgIcon={voting} nameLink='Голосование' />
                         </div>
                         <LinkComponent where="settings" objClassName='header__link-settings' svgIcon={settings} nameLink='Настройки' />
                     </nav>
                 </div>
                 <div className='header__exit-box'>
-                    <NavLink to='/entrance' className={'header__link-exit'} onClick={Exit}>
+                    <button className={'header__link-exit'} onClick={Exit}>
                         <img className='header__link-icon' src={exit} alt="*" />
                         <h1 className='header__link-name'>{'Выход'}</h1>
-                    </NavLink>
+                    </button>
                 </div>
             </header>
             <main className='main'>

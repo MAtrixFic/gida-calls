@@ -41,18 +41,15 @@ class Calls {
     }
 
     async ConnectToFind(what) {
-        await mongoose.connect('mongodb://localhost:27017/Calls')
         const result = await this.callModel.findOne(what);
         return await result;
     }
 
     async ConnectToWrite(filter, what) {
-        await mongoose.connect('mongodb://localhost:27017/Calls')
         await this.callModel.replaceOne(filter, what, { upsert: true, strict: false });
     }
 
-    async ConnectToRemove(filter = {date: { $lt : new Date()}}){
-        await mongoose.connect('mongodb://localhost:27017/Calls')
+    async ConnectToRemove(filter){
         await this.callModel.deleteMany(filter);
     }
 }

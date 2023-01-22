@@ -77,7 +77,9 @@
     font-weight: 600;
     align-self: flex-start;
 }
-
+.entrance__label-password:hover{
+    cursor: pointer;
+}
 .entrance__input-field-login,
 .entrance__input-field-password {
     padding: 0px 10px;

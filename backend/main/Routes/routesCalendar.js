@@ -1,13 +1,15 @@
 const exp = require('express');
 const { GetData, SetData, CallsOBJ } = require('../DataWork/callsOptions');
 const router = exp.Router();
+const passport = require('passport');
+const auth  = passport.authenticate('jwt', { session: false })
 
-router.get('/static', (req, res) => {
+router.get('/static', auth, (req, res) => {
     console.log(req.query)
     GetData(CallsOBJ.static, { name: req.query.weekDay }).then(data => res.send(data));
 });
 
-router.get('/dynamic', (req, res) => {
+router.get('/dynamic', auth, (req, res) => {
     console.log(req.query)
     const { weekDay, day, month, year } = req.query;
     GetData(CallsOBJ.dynamic, { date: `${year}-${month}-${day}` }).then(dataD => {
@@ -22,7 +24,7 @@ router.get('/dynamic', (req, res) => {
     });
 });
 
-router.put('/dynamic', (req, res) => {
+router.put('/dynamic', auth ,(req, res) => {
     const { date, first, second } = req.body;
     SetData(CallsOBJ.dynamic, { date: date }, {
         date: date,

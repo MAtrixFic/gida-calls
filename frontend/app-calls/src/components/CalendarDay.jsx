@@ -7,7 +7,7 @@ import DateNow from './modifications/DateNow';
 import ControlButton from './modifications/ControlButton';
 
 import '../styles/calendarday.css';
-const CalendarDay = () => {    
+const CalendarDay = () => {
     const nav = useNavigate();
     const gotTime = useParams();
     const [thisTime] = useState(() =>
@@ -63,7 +63,11 @@ const CalendarDay = () => {
         if (type === 'static') {
             prom = await fetch(`http://localhost:3001/calendar/${type}?` + new URLSearchParams({
                 weekDay: thisTime.weekdayLong
-            }));
+            }), {
+                headers: {
+                    "Authorization": localStorage?.auth
+                }
+            });
         }
         else if (type === 'dynamic') {
             prom = await fetch(`http://localhost:3001/calendar/${type}?` + new URLSearchParams({
@@ -71,9 +75,18 @@ const CalendarDay = () => {
                 day: gotTime.day,
                 month: gotTime.month,
                 year: gotTime.year
-            }));
+            }), {
+                headers: {
+                    "Authorization": localStorage?.auth
+                }
+            });
         }
-        return await prom.json();
+        if(prom.ok){
+            return await prom.json();
+        }
+        else{
+            nav('/auth/log')
+        }
     }
 
     function ResetAllTime() {
@@ -113,7 +126,8 @@ const CalendarDay = () => {
         CreateACellTime(dataOBJ, 'second')
         fetch('http://localhost:3001/calendar/dynamic', {
             headers: {
-                'Content-Type': "application/x-www-form-urlencoded"
+                'Content-Type': "application/x-www-form-urlencoded",
+                "Authorization": localStorage?.auth
             },
             method: "PUT",
             body: new URLSearchParams(dataOBJ)
