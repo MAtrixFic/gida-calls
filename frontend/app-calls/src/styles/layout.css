@@ -30,7 +30,7 @@ body {
 }
 
 .header__logo {
-    font-size: calc(22 * (100vw / 1080));
+    font-size: calc(16 * (100vw / 1080));
     font-weight: 600;
     color: #2D4047;
     letter-spacing: 2px;

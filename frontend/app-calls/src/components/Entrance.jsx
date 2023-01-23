@@ -48,7 +48,7 @@ const Entrance = () => {
         <div className='entrance'>
             <div className='entrance__form'>
                 <div className='entrance__logo-box'>
-                    <h1 className='entrance__logo'>GIDA</h1>
+                    <h1 className='entrance__logo'>GIDA CALLS</h1>
                 </div>
                 <div className='entrance__log-box'>
                     <div className='entrance__log-fields'>
