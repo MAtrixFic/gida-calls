@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate} from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import CellTime from './modifications/CellTime';
 import TimeBlock from './modifications/TimeBlock';
@@ -81,10 +81,10 @@ const CalendarDay = () => {
                 }
             });
         }
-        if(prom.ok){
+        if (prom.ok) {
             return await prom.json();
         }
-        else{
+        else {
             nav('/auth/log')
         }
     }
@@ -131,6 +131,9 @@ const CalendarDay = () => {
             },
             method: "PUT",
             body: new URLSearchParams(dataOBJ)
+        }).then(res => {
+            if (!res.ok)
+            nav('/auth/log')
         })
     }
 
@@ -140,7 +143,7 @@ const CalendarDay = () => {
                 <div className="main__date-calendar">
                     <h1>Календарь <span className='main__date-date'>{thisTime.year}</span></h1>
                     <button onClick={CopyTime}>Copy</button>
-                    <button disabled={(timeList?.first?.length === 0 && timeList?.first?.length === 0) ? false : true} onClick={PastTime}>Past</button>
+                    <button disabled={(timeList?.first?.length === 0 && timeList?.second?.length === 0) ? false : true} onClick={PastTime}>Past</button>
                 </div>
             </div>
             <div className="main__time-manager-box">

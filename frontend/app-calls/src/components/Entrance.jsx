@@ -54,11 +54,11 @@ const Entrance = () => {
                     <div className='entrance__log-fields'>
                         <div className='entrance__field-login'>
                             <label htmlFor="input-login" className='entrance__label-login'>Логин</label>
-                            <input ref={nickRef} name='login' type="text" id="input-login" className='entrance__input-field-login' required />
+                            <input ref={nickRef} name='login' type="text" id="input-login" className='entrance__input-field-login' autoComplete={'on'} required />
                         </div>
                         <div className='entrance__field-password'>
                             <label onClick={ShowPassword} htmlFor="input-password" className='entrance__label-password'>Пароль</label>
-                            <input ref={passwordRef} name='password' type="text" id="input-password" className='entrance__input-field-password' required />
+                            <input ref={passwordRef} name='password' type="password" id="input-password" className='entrance__input-field-password' autoComplete={'off'} required />
                         </div>
                     </div>
                 </div>

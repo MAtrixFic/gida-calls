@@ -58,6 +58,9 @@ function CheckOneNumber(event) {
     else if(event.currentTarget.value.length === 0){
         event.currentTarget.value = '00'
     }
+    else if(event.currentTarget.value > 59){
+        event.currentTarget.value = '59'
+    }
 }
 
 export default CellTime;

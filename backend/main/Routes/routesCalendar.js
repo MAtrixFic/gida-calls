@@ -1,40 +1,11 @@
-const exp = require('express');
-const { GetData, SetData, CallsOBJ } = require('../DataWork/callsOptions');
-const router = exp.Router();
+const router = require('express').Router();
 const passport = require('passport');
-const auth  = passport.authenticate('jwt', { session: false })
+const auth = passport.authenticate('jwt', { session: false })
+const { GetDynamic, GetStatic, PutDynamic, GetDynamicNow } = require('./routesMethods');
 
-router.get('/static', auth, (req, res) => {
-    console.log(req.query)
-    GetData(CallsOBJ.static, { name: req.query.weekDay }).then(data => res.send(data));
-});
-
-router.get('/dynamic', auth, (req, res) => {
-    console.log(req.query)
-    const { weekDay, day, month, year } = req.query;
-    GetData(CallsOBJ.dynamic, { date: `${year}-${month}-${day}` }).then(dataD => {
-        if (dataD === null) {
-            GetData(CallsOBJ.static, { name: weekDay }).then(dataS => {
-                res.send(dataS);
-            });
-        }
-        else {
-            res.send(dataD)
-        }
-    });
-});
-
-router.put('/dynamic', auth ,(req, res) => {
-    const { date, first, second } = req.body;
-    SetData(CallsOBJ.dynamic, { date: date }, {
-        date: date,
-        time: {
-            first: [...first.split(',')],
-            second: [...second.split(',')]
-        },
-        type: 'dynamic'
-    })
-    res.sendStatus(200);
-})
+router.get('/dynamic/now', GetDynamicNow);
+router.get('/static', auth, GetStatic);
+router.get('/dynamic', auth, GetDynamic);
+router.put('/dynamic', auth, PutDynamic);
 
 module.exports = router;

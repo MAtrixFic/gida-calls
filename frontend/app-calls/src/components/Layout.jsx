@@ -10,7 +10,6 @@ import exit from '../images/exit.svg';
 
 const Layout = () => {
     const nav = useNavigate()
-    
     function Exit() {
         if(localStorage.status === 'authorized'){
             let exitM = window.confirm('Вы действительно хотите выйти из учетной записи?');
