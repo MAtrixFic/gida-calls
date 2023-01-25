@@ -28,7 +28,7 @@ const Layout = () => {
         <>
             <header className='header'>
                 <div className='header__logo-box'>
-                    <h1 className='header__logo'>GIDA CALLS</h1>
+                    <h1 className='header__logo'>GIDA BELL</h1>
                 </div>
                 <div className='header__nav-box'>
                     <nav className='header__nav'>

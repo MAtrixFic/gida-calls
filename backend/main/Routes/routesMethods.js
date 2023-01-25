@@ -1,65 +1,77 @@
 const { DateTime } = require('luxon');
-const { GetData, SetData, CallsOBJ } = require('../DataWork/callsOptions');
+const ShcoolBell = require('../DataWork/shcoolBellClass');
+
 
 async function GetDynamic(req, res) {
     console.log(req.query)
     const { weekDay, day, month, year } = req.query;
-    GetData(CallsOBJ.dynamic, { date: `${year}-${month}-${day}` }).then(dataD => {
-        if (dataD === null) {
-            GetData(CallsOBJ.static, { name: weekDay }).then(dataS => {
-                res.send(dataS);
-            });
+    let response;
+    const connectionDynamic = new ShcoolBell('localhost', 'MAtrix', 'M1000110Atrix', 'school_bell').connection;
+    connectionDynamic.query(`SELECT firstTime, secondTime FROM dynamicdays WHERE definiteDate = "${year}-${month}-${day}"`, (errD, resD) => {
+        if (String(resD) === '') {
+            const connectionStatic = new ShcoolBell('localhost', 'MAtrix', 'M1000110Atrix', 'school_bell').connection;
+            connectionStatic.query(`SELECT firstTime, secondTime FROM staticdays WHERE dateWeekDay = "${weekDay}"`, (errS, resS) => {
+                console.log(resS, 'static');
+                response = ({ first: resS[0].firstTime, second: resS[0].secondTime });
+                res.send(response);
+                connectionStatic.end();
+                connectionDynamic.end();
+            })
         }
         else {
-            res.send(dataD)
+            console.log(resD, 'dynamic')
+            response = ({ first: resD[0].firstTime, second: resD[0].secondTime });
+            res.send(response);
+            connectionDynamic.end();
         }
-    });
+    })
 }
 
 async function GetStatic(req, res) {
     console.log(req.query)
-    GetData(CallsOBJ.static, { name: req.query.weekDay }).then(data => res.send(data));
+    const { weekDay } = req.query;
+    const connectionStatic = new ShcoolBell('localhost', 'MAtrix', 'M1000110Atrix', 'school_bell').connection;
+    connectionStatic.query(`SELECT firstTime, secondTime FROM staticdays WHERE dateWeekDay = "${weekDay}"`, (errD, resS) => {
+        const response = ({ first: resS[0].firstTime, second: resS[0].secondTime });
+        res.send(response);
+        connectionStatic.end();
+    })
 }
 
 async function GetDynamicNow(req, res) {
     const timeNow = DateTime.local().setLocale('ru');
-    const [year, month, day] = timeNow.toFormat('yyyy-MM-dd').split('-');
+    const definiteDate = timeNow.toFormat('yyyy-MM-dd');
     const weekDay = timeNow.weekdayLong;
+    console.log(weekDay, definiteDate)
     let rowInfo = timeNow.toFormat('ssmmHHddMMyyyy88880755');
-    GetData(CallsOBJ.dynamic, { date: `${year}-${month}-${day}` }).then(dataD => {
-        if (dataD === null) {
-            GetData(CallsOBJ.static, { name: weekDay }).then(dataS => {
-                rowInfo += MakeRow(dataS.time)
-                res.send(rowInfo)
-            });
+    const connectionDynamic = new ShcoolBell('localhost', 'MAtrix', 'M1000110Atrix', 'school_bell').connection;
+    connectionDynamic.query(`SELECT firstTime, secondTime FROM dynamicdays WHERE definiteDate = "${definiteDate}"`, (errD, resD) => {
+        if (String(resD) === '') {
+            const connectionStatic = new ShcoolBell('localhost', 'MAtrix', 'M1000110Atrix', 'school_bell').connection;
+            connectionStatic.query(`SELECT firstTime, secondTime FROM staticdays WHERE dateWeekDay = "${weekDay}"`, (errD, resS) => {
+                console.log(resS, 'static');
+                rowInfo += (resS[0].firstTime + resS[0].secondTime);
+                res.send(rowInfo);
+                connectionStatic.end();
+                connectionDynamic.end();
+            })
         }
         else {
-            rowInfo += MakeRow(dataD.time)
+            console.log(resD, 'dynamic')
+            rowInfo += (resD[0].firstTime + resD[0].secondTime);
             res.send(rowInfo);
+            connectionDynamic.end();
         }
-    });
+    })
 }
 
 async function PutDynamic(req, res) {
+    console.log(req.body)
     const { date, first, second } = req.body;
-    SetData(CallsOBJ.dynamic, { date: date }, {
-        date: date,
-        time: {
-            first: [...first.split(',')],
-            second: [...second.split(',')]
-        },
-        type: 'dynamic'
+    const connectionDynamic = new ShcoolBell('localhost', 'MAtrix', 'M1000110Atrix', 'school_bell').connection;
+    connectionDynamic.query(`REPLACE dynamicdays(definiteDate, firstTime, secondTime) VALUES("${date}",${first},${second})`, (errD, resD) => {
+        connectionDynamic.end();
     })
-    res.sendStatus(200);
-}
-
-function MakeRow(time = {}){
-    let row = '';
-    let timeArrays = time?.first.concat(time.second)
-    for (let i of timeArrays) {
-        row += i.replace(':', '').replace('-', '').replace(':', '');
-    }
-    return row;
 }
 
 module.exports = { GetDynamic, GetStatic, PutDynamic, GetDynamicNow }

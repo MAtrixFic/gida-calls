@@ -1,14 +1,21 @@
 const authRouter = require('express').Router();
-const { GetData, CallsOBJ } = require('../DataWork/callsOptions');
+const ShcoolBell = require('../DataWork/shcoolBellClass');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 authRouter.post('/log', async (req, res) => {
     const { username, password } = req.body;
-    GetData(CallsOBJ.users, { username: username }).then(result => {
-        if (result !== null) {
-            if (bcrypt.compareSync(password, result.password)) {
-                const token = jwt.sign({ id: result._id, username: result.username }, 'suck-jwt', { expiresIn: 3600 })
+    const authConnection = new ShcoolBell('localhost', 'MAtrix', 'M1000110Atrix', 'school_bell').connection;
+    authConnection.query(`SELECT userName, userPassword, role FROM users WHERE userName = "${username}"`, (err, result) => {
+        if (result[0] === undefined) {
+            res.send({
+                res: 'Неправильный Логин',
+                status: 'unauthenticated'
+            })
+        }
+        else {
+            if (bcrypt.compareSync(password, result[0].userPassword)) {
+                const token = jwt.sign({ role: result[0].role, username: result[0].userName }, 'suck-jwt', { expiresIn: 3600 })
                 res.status(200).json({
                     res: `Bearer ${token}`,
                     status: 'authenticated'
@@ -21,13 +28,7 @@ authRouter.post('/log', async (req, res) => {
                 })
             }
         }
-        else {
-            res.send({
-                res: 'Неправильный Логин',
-                status: 'unauthenticated'
-            })
-        }
-    });
+    })
 })
 
 module.exports = authRouter

@@ -1,7 +1,19 @@
 import React, { forwardRef, useState } from 'react';
 
 const CellTime = forwardRef((props, ref) => {
-    var [timeValues] = useState(() => props.callValue.replace(':', ' ').replace('-', ' ').replace(':', ' ').split(' '));
+    var [timeValues, setTimeValues] = useState(() =>{
+        let data = [];
+        let index = 0;
+        for (let i = 0; i < props.callValue.length / 2; i++) {
+            let row = '';
+            for (let j = 0; j < 2; j++) {
+                row += props.callValue[index]
+                index += 1;
+            }
+            data.push(row);
+        }
+        return (data);
+    });
     return (
         <div className={`main__cell-time ${props.access ? '_abled' : '_disabled'}`}>
             <InputCellTime

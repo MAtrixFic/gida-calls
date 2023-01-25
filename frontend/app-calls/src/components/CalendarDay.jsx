@@ -22,13 +22,41 @@ const CalendarDay = () => {
     var [timeList, setTimeList] = useState();
 
     useEffect(() => {
-        setTimeList(gettingData['time'])
+        console.log(gettingData)
+        let data = { first: [], second: [] };
+        try{
+            let indexFirst = 0;
+            let indexSecond = 0;
+            for (let i = 0; i < gettingData.first.length / 8; i++) {
+                let row = '';
+                for (let j = 0; j < 8; j++) {
+                    row += gettingData.first[indexFirst]
+                    indexFirst += 1;
+                }
+                data.first.push(row);
+            }
+            for (let i = 0; i < gettingData.second.length / 8; i++) {
+                let row = '';
+                for (let j = 0; j < 8; j++) {
+                    row += gettingData.second[indexSecond]
+                    indexSecond += 1;
+                }
+                data.second.push(row);
+            }
+        }
+        catch(err){
+            console.log(err)
+        }
+
+
+        setTimeList(data)
+        console.log(data)
     }, [gettingData])
 
     function AddCellTime(number = '') {
         if (timeList[number].length < 8) {
             var prevStateOfTimeList = timeList;
-            prevStateOfTimeList[number].push('00:00-00:00');
+            prevStateOfTimeList[number].push('00000000');
             ResetAllTime();
             setTimeList(prev => Object.assign(prev, prevStateOfTimeList))
         }
@@ -51,6 +79,7 @@ const CalendarDay = () => {
         CreateACellTime(timeObj, 'first');
         CreateACellTime(timeObj, 'second');
         localStorage.copy = JSON.stringify(timeObj);
+        console.log(localStorage.copy)
     }
 
     function PastTime() {
@@ -98,6 +127,7 @@ const CalendarDay = () => {
 
     function GiveAccess() {
         setAccessToWrite(prev => !prev);
+        console.log(refInpValue)
     }
 
     function CreateACellTime(obj, group) {
@@ -105,25 +135,25 @@ const CalendarDay = () => {
             let timeEl = "";
             for (let j = 0; j < 4; j++) {
                 timeEl += refInpValue.current[group][`${i + 1}_${j + 1}`]?.value
-                if (j === 0 || j === 2) {
-                    timeEl += ":"
-                }
-                else if (j === 1) {
-                    timeEl += "-"
-                }
             }
             obj[group].push(timeEl)
+        }
+    }
+
+    function CreateROW(obj, group){
+        for (let i in refInpValue.current[group]){
+            obj[group] += refInpValue.current[group][i].value
         }
     }
 
     async function SendDate() {
         let dataOBJ = {
             date: `${gotTime.year}-${gotTime.month}-${gotTime.day}`,
-            first: [],
-            second: [],
+            first: '',
+            second: '',
         };
-        CreateACellTime(dataOBJ, 'first')
-        CreateACellTime(dataOBJ, 'second')
+        CreateROW(dataOBJ, 'first')
+        CreateROW(dataOBJ, 'second')
         fetch('http://localhost:3001/calendar/dynamic', {
             headers: {
                 'Content-Type': "application/x-www-form-urlencoded",
@@ -133,7 +163,7 @@ const CalendarDay = () => {
             body: new URLSearchParams(dataOBJ)
         }).then(res => {
             if (!res.ok)
-            nav('/auth/log')
+                nav('/auth/log')
         })
     }
 
