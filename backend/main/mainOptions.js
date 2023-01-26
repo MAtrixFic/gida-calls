@@ -6,5 +6,6 @@ const CORSES = cors({
 })
 const PORT = process.env.PORT || 3001;
 const URLENCODER = express.urlencoded({ extended: true });
+const ADDRESS = '192.168.1.25';
 
-module.exports = {PORT, URLENCODER, CORSES}
+module.exports = {PORT, ADDRESS URLENCODER, CORSES}
