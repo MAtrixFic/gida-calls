@@ -14,6 +14,6 @@ require('./Passport/passport')(passport);
 server.use('/calendar', calendarRouter);
 server.use('/auth', authRouter)
 
-server.listen(PORT, () => {
-    console.log(`Server has been started on port ${PORT}`);
+server.listen(PORT,'84.201.255.221', () => {
+    console.log(`Server has been started on port ${'84.201.255.221'} ${PORT}`);
 });
