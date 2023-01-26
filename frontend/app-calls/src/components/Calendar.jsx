@@ -93,6 +93,15 @@ const CellDates = (props) => {
             </Link>
         )
     }
+    else if(timeToday.weekdayLong === 'воскресенье'){
+        return (
+            <Link className={`main__cell-dates`} to={link} onClick={event => {event.preventDefault(); window.alert('Это выходной день')}}>
+                <h1 className="main__d-year">{time.toFormat('LLLL')}</h1>
+                <h1 className="main__d-number">{timeToday.toFormat('dd')}</h1>
+                <h1 className="main__d-tag">{timeToday.weekdayLong}</h1>
+            </Link>
+        )
+    }
     else {
         return (
             <Link className={`main__cell-dates`} to={link}>

@@ -1,11 +1,11 @@
 const mySql = require('mysql2')
 
 class ShcoolBell {
-    constructor(_host, _user, _password, _database) {
-        this.host = _host;
-        this.user = _user;
-        this.password = _password;
-        this.database = _database;
+    constructor() {
+        this.host = 'localhost';
+        this.user = 'MAtrix';
+        this.password = 'M1000110Atrix';
+        this.database = 'school_bell';
         this.#connectToDB();
     }
 

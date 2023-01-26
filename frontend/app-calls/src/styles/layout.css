@@ -103,6 +103,10 @@ body {
     transition-duration: 0.4s;
 }
 
+.header__link-exit h1{
+    text-align: start;
+}
+
 .header__link-home:hover,
 .header__link-calendar:hover,
 .header__link-voting:hover,

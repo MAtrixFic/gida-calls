@@ -1,6 +1,6 @@
 const express = require('express');
 const server = express();
-const { PORT, ADDRESS, URLENCODER, CORSES } = require('./mainOptions')
+const { PORT, ADDRESSES, URLENCODER, CORSES } = require('./mainOptions')
 const calendarRouter = require('./Routes/routesCalendar');
 const authRouter = require('./Routes/routesAuth');
 const passport = require('passport')
@@ -12,6 +12,6 @@ require('./Passport/passport')(passport);
 server.use('/calendar', calendarRouter);
 server.use('/auth', authRouter)
 
-server.listen(PORT, ADDRESS, () => {
-    console.log(`Server has been started http://${ADDRESS}:${PORT}`);
+server.listen(PORT, ADDRESSES.school, () => {
+    console.log(`Server http://${ADDRESSES.school}:${PORT} has been started`);
 });

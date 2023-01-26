@@ -2,10 +2,11 @@ const cors = require('cors');
 const express = require('express');
 
 const CORSES = cors({
-    origin: ['http://localhost:5000', 'http://localhost:3000'],
+    origin: '*',
+    optionsSuccessStatus: 200,
 })
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 12355;
 const URLENCODER = express.urlencoded({ extended: true });
-const ADDRESS = '192.168.1.25';
+const ADDRESSES = { school: '192.168.1.25', local: 'localhost' };
 
-module.exports = {PORT, ADDRESS URLENCODER, CORSES}
+module.exports = { PORT, ADDRESSES, URLENCODER, CORSES }
