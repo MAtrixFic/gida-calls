@@ -113,7 +113,7 @@ const CalendarDay = () => {
         if (prom.ok) {
             return await prom.json();
         }
-        else {
+        else if(prom.status === 401) {
             nav('/auth/log')
         }
     }
@@ -142,7 +142,8 @@ const CalendarDay = () => {
 
     function CreateROW(obj, group){
         for (let i in refInpValue.current[group]){
-            obj[group] += refInpValue.current[group][i].value
+            if(refInpValue.current[group][i] !== null)
+            obj[group] += refInpValue.current[group][i]?.value
         }
     }
 
@@ -154,6 +155,7 @@ const CalendarDay = () => {
         };
         CreateROW(dataOBJ, 'first')
         CreateROW(dataOBJ, 'second')
+        console.log(dataOBJ)
         fetch('http://localhost:3001/calendar/dynamic', {
             headers: {
                 'Content-Type': "application/x-www-form-urlencoded",
@@ -162,7 +164,7 @@ const CalendarDay = () => {
             method: "PUT",
             body: new URLSearchParams(dataOBJ)
         }).then(res => {
-            if (!res.ok)
+            if (res.status === 401)
                 nav('/auth/log')
         })
     }

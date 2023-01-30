@@ -79,9 +79,26 @@
     grid-template-rows: 1fr;
     align-items: center;
     transition-duration: 0.2s;
-    /*animation-name: born;
-    animation-duration: 0.4s;
-    animation-fill-mode: backwards;*/
+    animation: time-born 0.4s backwards;
+}
+
+@keyframes time-born {
+    from{
+        transform-origin: 50% 50%;
+        transform: scaleX(0);
+    }
+    to{
+        transform: scaleX(1);
+    }
+}
+
+@keyframes time-show {
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
 }
 
 ._abled .main__time-input{
@@ -96,33 +113,6 @@
     color: #7F8C8C;
 }
 
-@keyframes born {
-    0% {
-        transform-origin: 50% 50%;
-        transform: scaleX(0);
-    }
-
-    100% {
-        transform: scaleX(1);
-    }
-}
-
-@keyframes killing {
-    0% {
-        transform-origin: 50% 50%;
-        transform: scaleX(1);
-    }
-
-    100% {
-        transform: scaleX(0);
-    }
-}
-.destroing{
-    animation-name: killing;
-    animation-duration: 0.2s;
-    animation-fill-mode: backwards;
-}
-
 .main__time-input,
 .main__cell-time-sign {
     width: 100%;
@@ -131,6 +121,7 @@
     background-color: transparent;
     text-align: center;
     transition-duration: 0.2s;
+    animation: time-show 0.6s backwards 0.5s;
 }
 
 .main__date-now {

@@ -74,7 +74,7 @@ async function PutDynamic(req, res) {
     console.log(req.body)
     const { date, first, second } = req.body;
     const connectionDynamic = new ShcoolBell().connection;
-    connectionDynamic.query(`REPLACE dynamicdays(definiteDate, firstTime, secondTime) VALUES("${date}",${first},${second})`, (errD, resD) => {
+    connectionDynamic.query(`REPLACE dynamicdays(definiteDate, firstTime, secondTime) VALUES("${date}","${first}","${second}")`, (errD, resD) => {
         connectionDynamic.end();
     })
 }

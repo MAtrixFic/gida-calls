@@ -36,19 +36,8 @@ const Calendar = () => {
                 if(prev === 0)
                 setDaysCount(prev + time.daysInMonth);
             })
-        }, 100)
+        }, 200)
     }, [time])
-
-    function keyInput(event){
-        switch(event.key){
-            case 'ArrowLeft':
-                MinusMonth();
-                break;
-            case 'ArrowRight':
-                PlusMonth();
-                break;
-        }
-    }
 
     return (
         <>
@@ -64,7 +53,7 @@ const Calendar = () => {
                     })}
                 </div>
             </div>
-            <div className='main__data-changer-box' onKeyDown={keyInput}>
+            <div className='main__data-changer-box'>
                 <div className="main__data-changer-body">
                     <button className="main__button-change-left" onClick={MinusMonth}>
                         <img src={arrow} alt="<" />
@@ -84,27 +73,23 @@ const CellDates = (props) => {
     const index = props.index;
     const timeToday = time.minus({ days: time.day - (index + 1) })
     const link = `date/${timeToday.toFormat('dd')}/${timeToday.toFormat('MM')}/${timeToday.year}`;
+
+    function ItsHoliday(event){
+        event.preventDefault(); 
+        window.alert('Это выходной день');
+    }
     if (DateTime.local().setLocale('ru').toFormat('yyyy-MM-dd') === timeToday.toFormat('yyyy-MM-dd')) {
         return (
-            <Link className={`main__cell-dates-now`} to={link}>
+            <Link className={`main__cell-dates-now`} to={link} onClick={timeToday.weekdayLong === 'воскресенье'? ItsHoliday : ''}>
                 <h1 className="main__d-year">{time.toFormat('LLLL')}</h1>
                 <h1 className="main__d-number-now">{timeToday.toFormat('dd')}</h1>
                 <h1 className="main__d-tag">{timeToday.weekdayLong}</h1>
             </Link>
         )
     }
-    else if(timeToday.weekdayLong === 'воскресенье'){
-        return (
-            <Link className={`main__cell-dates`} to={link} onClick={event => {event.preventDefault(); window.alert('Это выходной день')}}>
-                <h1 className="main__d-year">{time.toFormat('LLLL')}</h1>
-                <h1 className="main__d-number">{timeToday.toFormat('dd')}</h1>
-                <h1 className="main__d-tag">{timeToday.weekdayLong}</h1>
-            </Link>
-        )
-    }
     else {
         return (
-            <Link className={`main__cell-dates`} to={link}>
+            <Link className={`main__cell-dates`} to={link} onClick={timeToday.weekdayLong === 'воскресенье'? ItsHoliday : ''}>
                 <h1 className="main__d-year">{time.toFormat('LLLL')}</h1>
                 <h1 className="main__d-number">{timeToday.toFormat('dd')}</h1>
                 <h1 className="main__d-tag">{timeToday.weekdayLong}</h1>
