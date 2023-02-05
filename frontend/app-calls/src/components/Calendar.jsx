@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { DateTime } from 'luxon';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom'
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import '../styles/calendar.css';
-import arrow from '../images/arrow.svg';
+import arrow from '../images/rectButton.svg';
 
 const Calendar = () => {
 
@@ -14,31 +15,59 @@ const Calendar = () => {
     }
 
     const PlusMonth = () => {
-        if(tap === true)
         setTime(time.plus({ month: 1 }))
+        setShowMonth(prev => !prev);
+        setUpOrDown(1)
     }
 
     const MinusMonth = () => {
-        if(tap === true)
         setTime(time.minus({ month: 1 }))
+        setShowMonth(prev => !prev);
+        setUpOrDown(2)
     }
 
+    var [showMonth, setShowMonth] = useState(() => false);
     var [time, setTime] = useState(() => GetTime());
-    var [daysCount, setDaysCount] = useState(() => time.daysInMonth);
-    var [tap, setTap] = useState(true);
+    var [month, setMonth] = useState(() => time.toFormat('LLLL'));
+    var [upOrDown, setUpOrDown] = useState(() => 0);
+    var [daysInM, setDaysInM] = useState(() => 0);
 
     useEffect(() => {
-        setDaysCount(0);
-        setTap(prev => !prev);
-        setTimeout(() => {
-            setTap(prev => !prev)
-            setDaysCount(prev => {
-                if(prev === 0)
-                setDaysCount(prev + time.daysInMonth);
-            })
-        }, 200)
+        console.log('effect')
+        setMonth(time.toFormat('LLLL'));
+        setDaysInM(prev => prev = 0)
     }, [time])
 
+    useEffect(() => {
+        if (daysInM !== time.daysInMonth) {
+            setTimeout(() => {
+                setDaysInM(prev => prev + 1)
+            }, 200)
+        }
+    }, [daysInM])
+
+    const monthsList = {
+        appear: null,
+        appearActive: 'active',
+        appearDone: 'done',
+        enter: null,
+        enterActive: 'active',
+        enterDone: 'done',
+        exit: null,
+        exitActive: 'active',
+        exitDone: 'done',
+    }
+    const daysList ={
+        appear: null,
+        appearActive: 'active',
+        appearDone: 'done',
+        enter: null,
+        enterActive: 'active',
+        enterDone: 'done',
+        exit: null,
+        exitActive: 'passive',
+        exitDone: 'dead',
+    }
     return (
         <>
             <div className='main__date-box'>
@@ -48,20 +77,49 @@ const Calendar = () => {
             </div>
             <div className='main__calendar-box'>
                 <div className='main__calendar'>
-                    {[...new Array(daysCount)].map((v, i) => {
-                        return <CellDates index={i} time={time} key={i}/>
-                    })}
+                    <ul className='main__weekdays'>
+                        <li id='weekday'>Понедельник</li>
+                        <li id='weekday'>Вторник</li>
+                        <li id='weekday'>Среда</li>
+                        <li id='weekday'>Четверг</li>
+                        <li id='weekday'>Пятница</li>
+                        <li id='weekday'>Суббота</li>
+                        <li id='weekday'>Воскресенье</li>
+                    </ul>
+                    <TransitionGroup component={'div'} className='main__calendar-cells'>
+                        {[...new Array(daysInM)].map((_, i) => {
+                            return (
+                                <CSSTransition
+                                    key={i}
+                                    timeout={500}
+                                    classNames={daysList}
+                                    unmountOnExit
+                                    mountOnEnter>
+                                    <CellDates index={i} time={time} />
+                                </CSSTransition>
+                            )
+                        })}
+                    </TransitionGroup>
                 </div>
-            </div>
-            <div className='main__data-changer-box'>
-                <div className="main__data-changer-body">
-                    <button className="main__button-change-left" onClick={MinusMonth}>
-                        <img src={arrow} alt="<" />
-                    </button>
-                    <div className="main__date-change">{time.toFormat('LLLL')}</div>
-                    <button className="main__button-change-right" onClick={PlusMonth}>
-                        <img src={arrow} alt=">" />
-                    </button>
+                <div className="main__data-changer-box">
+                    <div className="main__data-changer-body">
+                        <button className='main__data-change-b-up' onClick={MinusMonth}>
+                            <img className='main__data-arrow-up' src={arrow} alt="" />
+                        </button>
+                        <CSSTransition
+                            timeout={200}
+                            in={showMonth}
+                            classNames={monthsList}>
+                            <div className={upOrDown === 0 ?
+                                "main__data-change-month" : upOrDown === 1 ?
+                                    "main__data-change-month-up" : "main__data-change-month-down"}>
+                                {month}
+                            </div>
+                        </CSSTransition>
+                        <button className="main__data-change-b-down" onClick={PlusMonth}>
+                            <img className='main__data-arrow-down' src={arrow} alt="" />
+                        </button>
+                    </div>
                 </div>
             </div>
         </>
@@ -73,29 +131,21 @@ const CellDates = (props) => {
     const index = props.index;
     const timeToday = time.minus({ days: time.day - (index + 1) })
     const link = `date/${timeToday.toFormat('dd')}/${timeToday.toFormat('MM')}/${timeToday.year}`;
-
-    function ItsHoliday(event){
-        event.preventDefault(); 
+    const isNow = DateTime.local().setLocale('ru').toFormat('yyyy-MM-dd') === timeToday.toFormat('yyyy-MM-dd');
+    function ItsHoliday(event) {
+        event.preventDefault();
         window.alert('Это выходной день');
     }
-    if (DateTime.local().setLocale('ru').toFormat('yyyy-MM-dd') === timeToday.toFormat('yyyy-MM-dd')) {
-        return (
-            <Link className={`main__cell-dates-now`} to={link} onClick={timeToday.weekdayLong === 'воскресенье'? ItsHoliday : ''}>
-                <h1 className="main__d-year">{time.toFormat('LLLL')}</h1>
-                <h1 className="main__d-number-now">{timeToday.toFormat('dd')}</h1>
-                <h1 className="main__d-tag">{timeToday.weekdayLong}</h1>
-            </Link>
-        )
-    }
-    else {
-        return (
-            <Link className={`main__cell-dates`} to={link} onClick={timeToday.weekdayLong === 'воскресенье'? ItsHoliday : ''}>
-                <h1 className="main__d-year">{time.toFormat('LLLL')}</h1>
-                <h1 className="main__d-number">{timeToday.toFormat('dd')}</h1>
-                <h1 className="main__d-tag">{timeToday.weekdayLong}</h1>
-            </Link>
-        )
-    }
+    return (
+        <Link className={isNow ? 'main__cell-dates-now' : 'main__cell-dates'}
+            style={{ gridColumn: `${timeToday.weekday}/${timeToday.weekday + 1}` }}
+            to={link}
+            onClick={timeToday.weekdayLong === 'воскресенье' ? ItsHoliday : null}>
+            <h1 className={isNow ? 'main__d-number-now' : 'main__d-number'}>
+                {timeToday.toFormat('dd')}
+            </h1>
+        </Link>
+    )
 }
 
 export default Calendar;

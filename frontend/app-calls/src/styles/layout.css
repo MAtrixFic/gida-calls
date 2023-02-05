@@ -8,7 +8,6 @@ body {
 .header {
     height: 100vh;
     width: 14vw;
-    min-width: 120px;
     max-width: 400px;
     border-right: 2px solid #E7EAEA;
     display: flex;
@@ -21,20 +20,19 @@ body {
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
     border-bottom: 2px solid #E7EAEA;
 }
 
-.header__logo-box,
 .header__exit-box {
     padding: 0px 2vh;
 }
 
 .header__logo {
-    font-size: calc(16 * (100vw / 1080));
+    font-size: 2rem;
     font-weight: 600;
     color: #2D4047;
     letter-spacing: 2px;
-    padding: 0px 1vh;
 }
 
 .header__nav-box {
@@ -63,11 +61,11 @@ body {
 .header__main-links>a,
 .header__link-settings,
 .header__link-exit {
-    font-size: calc(14 * (100vw / 1080));
+    font-size: 1.75rem;
     color: #798A89;
 }
 
-.header__link-exit{
+.header__link-exit {
     background-color: transparent;
 }
 
@@ -84,7 +82,7 @@ body {
 .header__link-voting img,
 .header__link-settings img,
 .header__link-exit img {
-    width: calc(18 * (100vw / 1080));
+    width: 2.25rem;
     height: 30px;
 }
 
@@ -103,7 +101,7 @@ body {
     transition-duration: 0.4s;
 }
 
-.header__link-exit h1{
+.header__link-exit h1 {
     text-align: start;
 }
 
@@ -111,19 +109,21 @@ body {
 .header__link-calendar:hover,
 .header__link-voting:hover,
 .header__link-settings:hover,
-.header__link-exit:hover{
+.header__link-exit:hover {
     background-color: #F0F4F6;
     border-radius: 10px;
 }
+
 .active>.header__link-name {
     color: #05B98C;
-    
+
 }
-.active{
+
+.active {
     transition-duration: 0.4s;
 }
 
-.active:hover{
+.active:hover {
     background-color: #EBF7F3;
     border-radius: 10px;
 }
@@ -137,3 +137,82 @@ body {
     height: 100vh;
     padding: 6.5vh;
 }
+
+/* @media all and (max-width: 1700px) {
+    .header__logo-box{
+        padding: 0px;
+        display: flex;
+        justify-content: center;
+    }
+    .header__logo {
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: #2D4047;
+        letter-spacing: 2px;
+    }
+    .header__logo h1{
+        padding: 0px;
+    }
+
+    .header__link-home h1,
+    .header__link-calendar h1,
+    .header__link-voting h1,
+    .header__link-settings h1,
+    .header__link-exit h1 {
+        font-size: 1.35rem;
+        align-self: center;
+    }
+
+}
+
+@media all and (max-width:1500px){
+    .header__link-home h1,
+    .header__link-calendar h1,
+    .header__link-voting h1,
+    .header__link-settings h1,
+    .header__link-exit h1 {
+        display: none;
+    }
+
+    .header__link-home,
+    .header__link-calendar,
+    .header__link-voting,
+    .header__link-settings,
+    .header__link-exit {
+        display: flex;
+        justify-content: center;
+        padding: 8px 0px;
+    }
+}
+
+@media all and (max-width: 1200px) {
+    .header{
+        min-width: 75px;
+        width: 8vw;
+    }
+    .header__logo {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2D4047;
+        letter-spacing: 2px;
+        text-align: center;
+    }
+
+    .header__nav-box {
+        padding: 1rem 1vh;
+        height: 87%;
+        width: 100%;
+    }
+
+    .main {
+        padding: 6.5vh 25px;
+        width: 88.5vw;
+    }
+}
+
+@media screen and (max-width: 800px){
+    .main {
+        padding: 6.5vh 10px;
+        width: 89.5vw;
+    }
+} */
