@@ -15,15 +15,23 @@ const Calendar = () => {
     }
 
     const PlusMonth = () => {
-        setTime(time.plus({ month: 1 }))
-        setShowMonth(prev => !prev);
-        setUpOrDown(1)
+        if (tap) {
+            setTap(false)
+            setTime(time.plus({ month: 1 }))
+            setShowMonth(prev => !prev);
+            setUpOrDown(1)
+            setDaysInM(0)
+        }
     }
 
     const MinusMonth = () => {
-        setTime(time.minus({ month: 1 }))
-        setShowMonth(prev => !prev);
-        setUpOrDown(2)
+        if (tap) {
+            setTap(false)
+            setTime(time.minus({ month: 1 }))
+            setShowMonth(prev => !prev);
+            setUpOrDown(2)
+            setDaysInM(0)
+        }
     }
 
     var [showMonth, setShowMonth] = useState(() => false);
@@ -31,18 +39,28 @@ const Calendar = () => {
     var [month, setMonth] = useState(() => time.toFormat('LLLL'));
     var [upOrDown, setUpOrDown] = useState(() => 0);
     var [daysInM, setDaysInM] = useState(() => 0);
+    var [tap, setTap] = useState(() => true);
 
     useEffect(() => {
         console.log('effect')
         setMonth(time.toFormat('LLLL'));
-        setDaysInM(prev => prev = 0)
     }, [time])
 
     useEffect(() => {
         if (daysInM !== time.daysInMonth) {
-            setTimeout(() => {
-                setDaysInM(prev => prev + 1)
-            }, 200)
+            if (daysInM === 0) {
+                setTimeout(() => {
+                    setDaysInM(prev => prev + 1)
+                }, 100)
+            }
+            else {
+                setTimeout(() => {
+                    setDaysInM(prev => prev + 1)
+                }, 30)
+            }
+        }
+        else {
+            setTap(true)
         }
     }, [daysInM])
 
@@ -56,17 +74,6 @@ const Calendar = () => {
         exit: null,
         exitActive: 'active',
         exitDone: 'done',
-    }
-    const daysList ={
-        appear: null,
-        appearActive: 'active',
-        appearDone: 'done',
-        enter: null,
-        enterActive: 'active',
-        enterDone: 'done',
-        exit: null,
-        exitActive: 'passive',
-        exitDone: 'dead',
     }
     return (
         <>
@@ -86,20 +93,13 @@ const Calendar = () => {
                         <li id='weekday'>Суббота</li>
                         <li id='weekday'>Воскресенье</li>
                     </ul>
-                    <TransitionGroup component={'div'} className='main__calendar-cells'>
+                    <div className="main__calendar-cells">
                         {[...new Array(daysInM)].map((_, i) => {
                             return (
-                                <CSSTransition
-                                    key={i}
-                                    timeout={500}
-                                    classNames={daysList}
-                                    unmountOnExit
-                                    mountOnEnter>
-                                    <CellDates index={i} time={time} />
-                                </CSSTransition>
+                                <CellDates index={i} time={time} />
                             )
                         })}
-                    </TransitionGroup>
+                    </div>
                 </div>
                 <div className="main__data-changer-box">
                     <div className="main__data-changer-body">
@@ -141,9 +141,9 @@ const CellDates = (props) => {
             style={{ gridColumn: `${timeToday.weekday}/${timeToday.weekday + 1}` }}
             to={link}
             onClick={timeToday.weekdayLong === 'воскресенье' ? ItsHoliday : null}>
-            <h1 className={isNow ? 'main__d-number-now' : 'main__d-number'}>
+            <span className={isNow ? 'main__d-number-now' : 'main__d-number'}>
                 {timeToday.toFormat('dd')}
-            </h1>
+            </span>
         </Link>
     )
 }
