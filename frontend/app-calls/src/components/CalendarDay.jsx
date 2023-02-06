@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useParams, useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import CellTime from './modifications/CellTime';
@@ -24,7 +25,7 @@ const CalendarDay = () => {
     useEffect(() => {
         console.log(gettingData)
         let data = { first: [], second: [] };
-        try{
+        try {
             let indexFirst = 0;
             let indexSecond = 0;
             for (let i = 0; i < gettingData.first.length / 8; i++) {
@@ -44,7 +45,7 @@ const CalendarDay = () => {
                 data.second.push(row);
             }
         }
-        catch(err){
+        catch (err) {
             console.log(err)
         }
 
@@ -113,7 +114,7 @@ const CalendarDay = () => {
         if (prom.ok) {
             return await prom.json();
         }
-        else if(prom.status === 401) {
+        else if (prom.status === 401) {
             nav('/auth/log')
         }
     }
@@ -140,10 +141,10 @@ const CalendarDay = () => {
         }
     }
 
-    function CreateROW(obj, group){
-        for (let i in refInpValue.current[group]){
-            if(refInpValue.current[group][i] !== null)
-            obj[group] += refInpValue.current[group][i]?.value
+    function CreateROW(obj, group) {
+        for (let i in refInpValue.current[group]) {
+            if (refInpValue.current[group][i] !== null)
+                obj[group] += refInpValue.current[group][i]?.value
         }
     }
 
@@ -169,6 +170,18 @@ const CalendarDay = () => {
         })
     }
 
+    const timesList = {
+        appear: null,
+        appearActive: 'active',
+        appearDone: 'done',
+        enter: null,
+        enterActive: 'active',
+        enterDone: 'done',
+        exit: null,
+        exitActive: 'deactive',
+        exitDone: 'dead',
+    }
+
     return (
         <>
             <div className='main__date-box'>
@@ -180,30 +193,32 @@ const CalendarDay = () => {
             </div>
             <div className="main__time-manager-box">
                 <div className="main__time-manager">
-                    <div className="main__first-time-box">
+                    <TransitionGroup className={"main__first-time-box"}>
                         <TimeBlock timeBlockName={'Первая смена'} access={accessToWrite}
                             func_01={() => AddCellTime('first')}
                             func_02={() => RemoveCellTime('first')} />
-                        {timeList?.['first']?.map((v, i) => <CellTime
-                            callValue={v}
-                            ref={refInpValue}
-                            access={accessToWrite}
-                            group={'first'}
-                            index={i + 1}
-                            key={i} />)}
-                    </div>
-                    <div className="main__second-time-box">
+                        {timeList?.['first']?.map((v, i) => <CSSTransition key={i} mountOnEnter unmountOnExit timeout={1100} classNames={timesList}>
+                            <CellTime
+                                callValue={v}
+                                ref={refInpValue}       
+                                access={accessToWrite}
+                                group={'first'}
+                                index={i + 1} />
+                        </CSSTransition>)}
+                    </TransitionGroup>
+                    <TransitionGroup className={"main__second-time-box"}>
                         <TimeBlock timeBlockName={'Вторая смена'} access={accessToWrite}
                             func_01={() => AddCellTime('second')}
                             func_02={() => RemoveCellTime('second')} />
-                        {timeList?.['second']?.map((v, i) => <CellTime
-                            callValue={v}
-                            ref={refInpValue}
-                            access={accessToWrite}
-                            group={'second'}
-                            index={i + 1}
-                            key={i} />)}
-                    </div>
+                        {timeList?.['second']?.map((v, i) => <CSSTransition key={i} mountOnEnter unmountOnExit timeout={1100} classNames={timesList}>
+                            <CellTime
+                                callValue={v}
+                                ref={refInpValue}
+                                access={accessToWrite}
+                                group={'second'}
+                                index={i + 1} />
+                        </CSSTransition>)}
+                    </TransitionGroup>
                 </div>
                 <DateNow _thisTime={thisTime} />
                 <div className="main__time-manager-buttons">

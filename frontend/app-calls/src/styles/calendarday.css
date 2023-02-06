@@ -79,16 +79,31 @@
     grid-template-rows: 1fr;
     align-items: center;
     transition-duration: 0.2s;
+    transform-origin: 50% 50%;
     animation: time-born 0.4s backwards;
+}
+
+
+.main__cell-time.deactive{
+    animation: time-dead 0.4s forwards;
+    animation-delay: 0.7s;
 }
 
 @keyframes time-born {
     from{
-        transform-origin: 50% 50%;
         transform: scaleX(0);
     }
     to{
         transform: scaleX(1);
+    }
+}
+
+@keyframes time-dead {
+    from{
+        transform: scaleX(1);
+    }
+    to{
+        transform: scaleX(0);
     }
 }
 
@@ -98,6 +113,15 @@
     }
     to{
         opacity: 1;
+    }
+}
+
+@keyframes time-hide {
+    from{
+        opacity: 1;
+    }
+    to{
+        opacity: 0;
     }
 }
 
@@ -122,6 +146,11 @@
     text-align: center;
     transition-duration: 0.2s;
     animation: time-show 0.6s backwards 0.5s;
+}
+
+.deactive > .main__time-input,
+.deactive > .main__cell-time-sign{
+    animation: time-hide 0.6s forwards;
 }
 
 .main__date-now {

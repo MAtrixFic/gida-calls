@@ -56,12 +56,13 @@ const Calendar = () => {
             else {
                 setTimeout(() => {
                     setDaysInM(prev => prev + 1)
-                }, 30)
+                }, 10)
             }
         }
         else {
             setTap(true)
         }
+        console.log(daysInM)
     }, [daysInM])
 
     const monthsList = {
@@ -94,11 +95,9 @@ const Calendar = () => {
                         <li id='weekday'>Воскресенье</li>
                     </ul>
                     <div className="main__calendar-cells">
-                        {[...new Array(daysInM)].map((_, i) => {
-                            return (
-                                <CellDates index={i} time={time} />
-                            )
-                        })}
+                        {[...new Array(daysInM)].map((_, i) =>
+                            <CellDates index={i} time={time} key={i} />
+                        )}
                     </div>
                 </div>
                 <div className="main__data-changer-box">
