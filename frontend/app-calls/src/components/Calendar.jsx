@@ -1,8 +1,8 @@
 import React, { forwardRef } from 'react';
 import { DateTime } from 'luxon';
-import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom'
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom'
+import { CSSTransition } from 'react-transition-group';
 
 import '../styles/calendar.css';
 import arrow from '../images/rectButton.svg';
@@ -17,7 +17,7 @@ const Calendar = () => {
     const PlusMonth = () => {
         if (tap) {
             setTap(false)
-            setTime(time.plus({ month: 1 }))
+            setTime(prev => prev.plus({ month: 1 }))
             setShowMonth(prev => !prev);
             setUpOrDown(1)
             setDaysInM(0)
@@ -27,7 +27,7 @@ const Calendar = () => {
     const MinusMonth = () => {
         if (tap) {
             setTap(false)
-            setTime(time.minus({ month: 1 }))
+            setTime(prev => prev.minus({ month: 1 }))
             setShowMonth(prev => !prev);
             setUpOrDown(2)
             setDaysInM(0)
@@ -40,14 +40,25 @@ const Calendar = () => {
     var [upOrDown, setUpOrDown] = useState(() => 0);
     var [daysInM, setDaysInM] = useState(() => 0);
     var [tap, setTap] = useState(() => true);
+    var [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
-        console.log('effect')
-        setMonth(time.toFormat('LLLL'));
+        if (searchParams.get('redirection') === 'weekend') {
+            alert('Этовыходной день!')
+        }
+        else if (searchParams.get('redirection') === 'uncorrect') {
+            alert('Неправильная дата!')
+        }
+    }, [])
+
+    useEffect(() => {
+        setTimeout(() => {
+            setMonth(time.toFormat('LLLL'));
+        }, 200)
     }, [time])
 
     useEffect(() => {
-        if (daysInM !== time.daysInMonth) {
+        if (daysInM < time.daysInMonth) {
             if (daysInM === 0) {
                 setTimeout(() => {
                     setDaysInM(prev => prev + 1)
@@ -56,7 +67,7 @@ const Calendar = () => {
             else {
                 setTimeout(() => {
                     setDaysInM(prev => prev + 1)
-                }, 10)
+                }, 1)
             }
         }
         else {
@@ -103,7 +114,9 @@ const Calendar = () => {
                 <div className="main__data-changer-box">
                     <div className="main__data-changer-body">
                         <button className='main__data-change-b-up' onClick={MinusMonth}>
-                            <img className='main__data-arrow-up' src={arrow} alt="" />
+                            <svg width="72" height="65" viewBox="0 0 72 65" fill="#8896D9" xmlns="http://www.w3.org/2000/svg" className='main__data-arrow-up'>
+                                <path d="M27.3397 5C31.1887 -1.66666 40.8113 -1.66667 44.6603 5L70.641 50C74.49 56.6667 69.6788 65 61.9808 65H10.0192C2.32124 65 -2.49002 56.6667 1.35898 50L27.3397 5Z" />
+                            </svg>
                         </button>
                         <CSSTransition
                             timeout={200}
@@ -116,7 +129,9 @@ const Calendar = () => {
                             </div>
                         </CSSTransition>
                         <button className="main__data-change-b-down" onClick={PlusMonth}>
-                            <img className='main__data-arrow-down' src={arrow} alt="" />
+                            <svg width="72" height="65" viewBox="0 0 72 65" fill="#8896D9" xmlns="http://www.w3.org/2000/svg" className='main__data-arrow-down'>
+                                <path d="M27.3397 5C31.1887 -1.66666 40.8113 -1.66667 44.6603 5L70.641 50C74.49 56.6667 69.6788 65 61.9808 65H10.0192C2.32124 65 -2.49002 56.6667 1.35898 50L27.3397 5Z" />
+                            </svg>
                         </button>
                     </div>
                 </div>

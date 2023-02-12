@@ -4,22 +4,20 @@ import '../styles/layout.css';
 
 import home from '../images/home.svg';
 import calendar from '../images/calendar.svg';
-import voting from '../images/voting.svg';
-import settings from '../images/settings.svg';
-import exit from '../images/exit.svg';
+import voiting from '../images/voiting.svg';
 
 const Layout = () => {
     const nav = useNavigate()
     function Exit() {
-        if(localStorage.status === 'authorized'){
+        if (localStorage.status === 'authorized') {
             let exitM = window.confirm('Вы действительно хотите выйти из учетной записи?');
-            if(exitM){
+            if (exitM) {
                 localStorage.setItem('status', 'unauthorized');
                 localStorage.setItem('auth', 'nothing')
                 nav('/auth/log')
             }
         }
-        else{
+        else {
             nav('/auth/log')
         }
     }
@@ -30,20 +28,14 @@ const Layout = () => {
                 <div className='header__logo-box'>
                     <h1 className='header__logo'>GIDA BELL</h1>
                 </div>
-                <div className='header__nav-box'>
-                    <nav className='header__nav'>
-                        <div className='header__main-links'>
-                            <LinkComponent where="home" objClassName='header__link-home' svgIcon={home} nameLink='Домой' />
-                            <LinkComponent where="/calendar" objClassName='header__link-calendar' svgIcon={calendar} nameLink='Календарь' />
-                            <LinkComponent where="voting" objClassName='header__link-voting' svgIcon={voting} nameLink='Голосование' />
-                        </div>
-                        <LinkComponent where="settings" objClassName='header__link-settings' svgIcon={settings} nameLink='Настройки' />
-                    </nav>
-                </div>
+                <nav className='header__nav-box'>
+                    <LinkComponent where="/home" nameLink='Домой' icon={home}/>
+                    <LinkComponent where="/calendar" nameLink='Календарь' icon={calendar}/>
+                    <LinkComponent where="/voting" nameLink='Голосование' icon={voiting}/>
+                </nav>
                 <div className='header__exit-box'>
-                    <button className={'header__link-exit'} onClick={Exit}>
-                        <img className='header__link-icon' src={exit} alt="*" />
-                        <h1 className='header__link-name'>{'Выход'}</h1>
+                    <button className='header__exit' onClick={Exit}>
+                        <span className='header__exit-name'>Выход</span>
                     </button>
                 </div>
             </header>
@@ -56,9 +48,9 @@ const Layout = () => {
 
 const LinkComponent = (props) => {
     return (
-        <NavLink to={props.where} className={props.objClassName}>
-            <img className='header__link-icon' src={props.svgIcon} alt="*" />
-            <h1 className='header__link-name'>{props.nameLink}</h1>
+        <NavLink to={props.where} className="header__link">
+            <img src={props.icon} alt="*" className='header__link-icon'/>
+            <span className='header__link-name'>{props.nameLink}</span>
         </NavLink>
     )
 }

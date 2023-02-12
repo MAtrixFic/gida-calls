@@ -7,7 +7,7 @@
 }
 
 .entrance__form {
-    background-color: #F7FAFC;
+    background-color: #EAEDF2;
     border-radius: 25px;
     overflow: hidden;
     padding: 4rem;
@@ -34,7 +34,7 @@
 .entrance__logo {
     font-size: 3.75em;
     font-weight: 600;
-    color: #2D4047;
+    color: #1D232D;
     letter-spacing: 10px;
 }
 
@@ -72,14 +72,16 @@
 
 .entrance__label-login,
 .entrance__label-password {
-    color: #2D4047;
+    color: #1D232D;
     font-size: 1.75em;
     font-weight: 600;
     align-self: flex-start;
 }
-.entrance__label-password:hover{
+
+.entrance__label-password:hover {
     cursor: pointer;
 }
+
 .entrance__input-field-login,
 .entrance__input-field-password {
     padding: 0px 10px;
@@ -88,9 +90,9 @@
     color: #2D4047;
     height: 60px;
     width: 100%;
-    background-color: #EBF7F3;
+    background-color: #EAEDF2;
     border-radius: 10px;
-    border: 4px solid #05B98C;
+    border: 4px solid #8896D9;
 }
 
 .entrance__submits-box {
@@ -119,19 +121,19 @@
     box-shadow: 0px 2px 6px #BECFCB;
     font-size: 2em;
     font-weight: 600;
-    color: #05B98C;
+    color: #8896D9;
     transition-duration: 0.4s;
 }
 
 .entrance__entry-button:hover {
     box-shadow: 0px 4px 6px #a7b6b2;
     transform: scale(1.05);
-    background-color: #05B98C;
+    background-color: #8896D9;
     color: white;
 }
 
 .entrance__forgot-password-button {
-    color: #05B98C;
+    color: #8896D9;
     font-weight: 600;
     font-size: 1.35em;
     align-self: flex-start;
@@ -146,7 +148,7 @@
     left: 0px;
     height: 2px;
     width: 100%;
-    background-color: #05B98C;
+    background-color: #8896D9;
     transform-origin: 50% 100%;
     transform: scaleX(0);
     transition-duration: 0.2s;

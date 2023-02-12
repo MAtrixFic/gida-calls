@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useParams, useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import CellTime from './modifications/CellTime';
@@ -20,7 +19,7 @@ const CalendarDay = () => {
     var [accessToWrite, setAccessToWrite] = useState(() => false); //доступ к изменению полей
     var refInpValue = useRef({ first: {}, second: {} });//ссылка на поля инпут
     var [gettingData, setGettingData] = useState(() => GetData('dynamic').then(data => setGettingData(data)));//получение расписания
-    var [timeList, setTimeList] = useState();
+    var [timeList, setTimeList] = useState(() => []);
 
     useEffect(() => {
         console.log(gettingData)
@@ -48,11 +47,10 @@ const CalendarDay = () => {
         catch (err) {
             console.log(err)
         }
-
-
         setTimeList(data)
         console.log(data)
     }, [gettingData])
+    console.log(timeList)
 
     function AddCellTime(number = '') {
         if (timeList[number].length < 8) {
@@ -88,7 +86,7 @@ const CalendarDay = () => {
     }
 
     async function GetData(type = 'dynamic', update = false) {
-        if (update) setTimeList([]);
+        if (update) ResetAllTime();
         let prom;
         if (type === 'static') {
             prom = await fetch(`http://localhost:3001/calendar/${type}?` + new URLSearchParams({
@@ -170,18 +168,6 @@ const CalendarDay = () => {
         })
     }
 
-    const timesList = {
-        appear: null,
-        appearActive: 'active',
-        appearDone: 'done',
-        enter: null,
-        enterActive: 'active',
-        enterDone: 'done',
-        exit: null,
-        exitActive: 'deactive',
-        exitDone: 'dead',
-    }
-
     return (
         <>
             <div className='main__date-box'>
@@ -193,32 +179,30 @@ const CalendarDay = () => {
             </div>
             <div className="main__time-manager-box">
                 <div className="main__time-manager">
-                    <TransitionGroup className={"main__first-time-box"}>
+                    <div className={"main__first-time-box"}>
                         <TimeBlock timeBlockName={'Первая смена'} access={accessToWrite}
                             func_01={() => AddCellTime('first')}
                             func_02={() => RemoveCellTime('first')} />
-                        {timeList?.['first']?.map((v, i) => <CSSTransition key={i} mountOnEnter unmountOnExit timeout={1100} classNames={timesList}>
+                        {timeList?.['first']?.map((v, i) =>
                             <CellTime
                                 callValue={v}
-                                ref={refInpValue}       
+                                ref={refInpValue}
                                 access={accessToWrite}
                                 group={'first'}
-                                index={i + 1} />
-                        </CSSTransition>)}
-                    </TransitionGroup>
-                    <TransitionGroup className={"main__second-time-box"}>
-                        <TimeBlock timeBlockName={'Вторая смена'} access={accessToWrite}
+                                index={i + 1} />)}
+                            </div>
+                            <div className={"main__second-time-box"}>
+                        <TimeBlock timeBlockName={'Первая смена'} access={accessToWrite}
                             func_01={() => AddCellTime('second')}
                             func_02={() => RemoveCellTime('second')} />
-                        {timeList?.['second']?.map((v, i) => <CSSTransition key={i} mountOnEnter unmountOnExit timeout={1100} classNames={timesList}>
+                        {timeList?.['second']?.map((v, i) =>
                             <CellTime
                                 callValue={v}
                                 ref={refInpValue}
                                 access={accessToWrite}
                                 group={'second'}
-                                index={i + 1} />
-                        </CSSTransition>)}
-                    </TransitionGroup>
+                                index={i + 1} />)}
+                            </div>
                 </div>
                 <DateNow _thisTime={thisTime} />
                 <div className="main__time-manager-buttons">

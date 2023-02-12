@@ -10,7 +10,7 @@
 .main__time-manager {
     grid-column: 1/5;
     grid-row: 1/5;
-    background-color: #F7FAFC;
+    background-color: white;
     border-radius: 25px;
     padding: 4vh;
     display: flex;
@@ -29,7 +29,6 @@
 
 .main__time-block {
     background-color: white;
-    box-shadow: 0px 2px 6px #BECFCB;
     border-radius: 10px;
     padding: 1vh;
     display: grid;
@@ -40,9 +39,9 @@
 .main__time-cell-button-blus-minus {
     background-color: white;
     border-radius: 5px;
-    color: #05B98C;
-    font-size: calc(14 * (100vw / 1080));
-    border: 2px solid #05B98C;
+    color: #8896D9;
+    font-size: 1.5rem;
+    border: 2px solid #8896D9;
     transition-duration: 0.2s;
 }
 
@@ -57,9 +56,9 @@
     align-self: center;
     grid-column: 2/4;
     text-align: center;
-    font-size: calc(14 * (100vw / 1080));
+    font-size: 1.5rem;
     font-weight: 600;
-    color: #05B98C;
+    color: #AFB6BB;
 }
 
 ._disabled {
@@ -126,30 +125,30 @@
 }
 
 ._abled .main__time-input{
-    color: #00BD89;
+    color: #8896D9;
 }
 ._abled .main__cell-time-sign{
-    color: #808C8C;
+    color: #AFB6BB;
 }
 
 ._disabled .main__time-input,
 ._disabled .main__cell-time-sign {
-    color: #7F8C8C;
+    color: #AFB6BB;
 }
 
 .main__time-input,
 .main__cell-time-sign {
     width: 100%;
     font-weight: 600;
-    font-size: calc(12 * (100vw / 1080));
+    font-size: 1.5rem;
     background-color: transparent;
     text-align: center;
     transition-duration: 0.2s;
     animation: time-show 0.6s backwards 0.5s;
 }
 
-.deactive > .main__time-input,
-.deactive > .main__cell-time-sign{
+.deactive .main__time-input,
+.deactive .main__cell-time-sign{
     animation: time-hide 0.6s forwards;
 }
 
@@ -159,7 +158,6 @@
     grid-row: 1/3;
     background-color: white;
     border-radius: 25px;
-    box-shadow: 0px 2px 6px #BECFCB;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -167,19 +165,19 @@
 }
 
 .main__date-now-month {
-    font-size: calc(16 * (100vw / 1080));
+    font-size: 1.8rem;
     font-weight: 400;
     color: #BCC3C3;
 }
 
 .main__date-now-number {
-    font-size: calc(60 * (100vw / 1080));
+    font-size: 8rem;
     font-weight: 500;
-    color: #05B98C;
+    color: #8896D9;
 }
 
 .main__date-now-tag {
-    font-size: calc(18 * (100vw / 1080));
+    font-size: 1.75rem;
     font-weight: 500;
     color: #7F8C8C;
 }
@@ -189,7 +187,6 @@
     grid-row: 3/5;
     background-color: white;
     border-radius: 25px;
-    box-shadow: 0px 2px 6px #BECFCB;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(4, 1fr);
@@ -207,10 +204,10 @@
 .main__standart-time-button {
     background-color: transparent;
     border-radius: 10px;
-    border: 3px solid #05B98C;
-    font-size: calc(16 * (100vw / 1080));
+    border: 3px solid #8896D9;
+    font-size: 1.75rem;
     font-weight: 600;
-    color: #05B98C;
+    color: #8896D9;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -220,15 +217,15 @@
 
 .main__standart-time-button:hover {
     color: white;
-    background-color: #05B98C;
+    background-color: #8896D9;
 }
 
 .main__ok-change-button {
-    background-color: #EBF7F3;
+    background-color: #EDF0FF;
     border-radius: 10px;
-    font-size: calc(16 * (100vw / 1080));
+    font-size: 1.75rem;
     font-weight: 600;
-    color: #05B98C;
+    color: #8896D9;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -237,5 +234,5 @@
 }
 
 .main__ok-change-button:hover {
-    box-shadow: 0px 0px 10px #33BC9C;
+    box-shadow: 0px 0px 10px #8896D9;
 }
