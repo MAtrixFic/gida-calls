@@ -190,9 +190,9 @@ const CalendarDay = () => {
                                 access={accessToWrite}
                                 group={'first'}
                                 index={i + 1} />)}
-                            </div>
-                            <div className={"main__second-time-box"}>
-                        <TimeBlock timeBlockName={'Первая смена'} access={accessToWrite}
+                    </div>
+                    <div className={"main__second-time-box"}>
+                        <TimeBlock timeBlockName={'Вторая смена'} access={accessToWrite}
                             func_01={() => AddCellTime('second')}
                             func_02={() => RemoveCellTime('second')} />
                         {timeList?.['second']?.map((v, i) =>
@@ -202,7 +202,7 @@ const CalendarDay = () => {
                                 access={accessToWrite}
                                 group={'second'}
                                 index={i + 1} />)}
-                            </div>
+                    </div>
                 </div>
                 <DateNow _thisTime={thisTime} />
                 <div className="main__time-manager-buttons">

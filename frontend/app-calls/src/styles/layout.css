@@ -51,6 +51,7 @@ body {
     grid-template-columns: 30px 1fr;
     grid-template-rows: 1fr;
     padding-left: 1rem;
+    border-radius: 15px;
     gap: 1rem;
 }
 
@@ -69,11 +70,10 @@ body {
 }
 
 .active {
-    border-radius: 15px;
     transition-duration: 0.2s;
 }
 
-.active:hover {
+.header__link:hover {
     background-color: #F0F2FF;
 }
 

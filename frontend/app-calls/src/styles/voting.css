@@ -1,0 +1,104 @@
+.main__voting-box {
+    background-color: white;
+    border-radius: 25px;
+    width: 100%;
+    height: 90%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(40px,60px) 1fr;
+    gap: 1rem;
+    padding: 2vh;
+}
+
+.main__v-tool-bar {
+    background-color: #EAEDF2;
+    width: 100%;
+    border-radius: 10px;
+    padding: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(40px, 50px)) 1fr;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.main__v-make-column,
+.main__v-make-row,
+.main-v-add-voting {
+    background-color: transparent;
+}
+
+.main__v-make-column,
+.main__v-make-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-v-add-voting {
+    justify-self: end;
+    display: grid;
+    grid-template-columns: minmax(200px, 250px) minmax(30px, 45px);
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #8896D9;
+    gap: 0.5rem;
+}
+
+.main-v-add-voting-sign {
+    border-radius: 5px;
+    border: 2px solid #8896D9;
+    transition-duration: 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    height: fit-content;
+    width: fit-content;
+}
+
+.main-v-add-voting-sign svg {
+    width: 24px;
+    height: 24px;
+}
+
+.main-v-add-voting:hover .main-v-add-voting-sign {
+    background-color: #8896D9;
+}
+
+.main-v-add-voting:hover .main-v-add-voting-sign svg {
+    fill: #EAEDF2;
+}
+
+.main__voting-list{
+    display: grid;
+    gap: 1rem;
+    overflow-y: scroll;
+    padding: 1rem;
+}
+
+.main__voting-list.column {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 160px);
+    grid-auto-rows:  160px;
+    transition-duration: 0.5s;
+}
+
+.main__voting-list.row{
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(8, 70px);
+    grid-auto-rows: 70px;
+    transition-duration: 0.5s;
+}
+
+.main__voting-cell{
+    background-color: #8896D9;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 10px;
+    color: white;
+    font-size: 4.4rem;
+    padding: 0.5rem;
+}

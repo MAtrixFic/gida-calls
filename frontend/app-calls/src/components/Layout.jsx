@@ -29,9 +29,9 @@ const Layout = () => {
                     <h1 className='header__logo'>GIDA BELL</h1>
                 </div>
                 <nav className='header__nav-box'>
-                    <LinkComponent where="/home" nameLink='Домой' icon={home}/>
-                    <LinkComponent where="/calendar" nameLink='Календарь' icon={calendar}/>
-                    <LinkComponent where="/voting" nameLink='Голосование' icon={voiting}/>
+                    <LinkComponent where="/main/home" nameLink='Домой' icon={home}/>
+                    <LinkComponent where="/main/calendar" nameLink='Календарь' icon={calendar}/>
+                    <LinkComponent where="/main/voting" nameLink='Голосование' icon={voiting}/>
                 </nav>
                 <div className='header__exit-box'>
                     <button className='header__exit' onClick={Exit}>
