@@ -1,3 +1,7 @@
+body{
+    display: block;
+}
+
 .entrance {
     height: 100vh;
     width: 100vw;

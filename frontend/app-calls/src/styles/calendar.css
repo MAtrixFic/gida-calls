@@ -14,6 +14,14 @@
     height: auto;
 }
 
+.land {
+    display: block;
+}
+
+.port {
+    display: none;
+}
+
 .main__date-calendar h1 {
     font-size: 4rem;
     font-weight: 500;
@@ -23,17 +31,6 @@
 .main__date-date {
     font-weight: 600;
     color: #8896D9;
-    position: relative;
-}
-
-.main__date-date::before {
-    content: '';
-    bottom: -2px;
-    left: 0px;
-    width: 100%;
-    height: 4px;
-    background-color: #8896D9;
-    position: absolute;
 }
 
 .main__calendar-box {
@@ -251,6 +248,9 @@
     transition-duration: 0.2s;
     z-index: 10;
     border: 2px solid #8A96D6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .main__data-arrow-down,
@@ -266,4 +266,166 @@
 .main__data-change-b-down:hover {
     transform: scale(1.1);
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+@media all and (max-width: 1400px) {
+
+    .main__d-number,
+    .main__d-number-now {
+        font-size: 3rem;
+    }
+
+    #weekday {
+        font-size: 1.2rem;
+    }
+
+    .main__date-calendar h1 {
+        font-size: 3.5rem;
+    }
+
+    .main__data-change-month {
+        font-size: 1.5rem;
+    }
+}
+
+@media all and (max-width: 1050px) {
+
+    .main__d-number,
+    .main__d-number-now {
+        font-size: 2rem;
+    }
+
+    #weekday {
+        font-size: 1rem;
+    }
+
+    .main__date-calendar h1 {
+        font-size: 3rem;
+    }
+
+    .main__data-change-month {
+        font-size: 1.2rem;
+    }
+}
+
+@media all and (max-width: 850px) {
+    .main__date-calendar h1 {
+        font-size: 2.5rem;
+    }
+
+    #weekday {
+        font-size: 0.8rem;
+    }
+
+    .main__data-changer-box {
+        min-width: 70px;
+    }
+
+    .main__data-changer-body {
+        padding: 1vh;
+        border-radius: 25px;
+    }
+
+    .main__cell-dates {
+        border-width: 1px;
+    }
+
+    .main__data-change-b-up,
+    .main__data-change-b-down {
+        max-height: 50px;
+        min-height: 20px;
+        border-radius: 15px;
+        border: 1px solid #8A96D6;
+    }
+}
+
+@media all and (orientation: portrait) {
+    .main__date-box {
+        height: 5%;
+    }
+
+    .main__calendar-box {
+        height: 93%;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .main__data-changer-box {
+        height: 10%;
+        min-height: 80px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .main__calendar {
+        height: 87%;
+        max-height: 400px;
+    }
+
+    .main__data-changer-body {
+        width: 100%;
+        padding: 1vh;
+        border-radius: 25px;
+        display: grid;
+        grid-template-columns: minmax(70px, 80px) 1fr minmax(70px, 80px);
+        gap: 1rem;
+        background-color: white;
+    }
+
+    .main__data-change-month,
+    .main__data-change-month-up,
+    .main__data-change-month-down {
+        writing-mode: horizontal-tb;
+        font-size: 2rem;
+        font-weight: 800;
+        color: #8896D9;
+        text-transform: uppercase;
+        transform-origin: 50% 50%;
+        z-index: 9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .main__data-change-b-down,
+    .main__data-change-b-up {
+        height: 100%;
+        max-height: max-content;
+    }
+
+    .main__data-arrow-down,
+    .main__data-arrow-up {
+        width: 24px;
+    }
+
+    .main__weekdays {
+        gap: 0.2rem;
+    }
+
+    .land {
+        display: none;
+    }
+
+    .port {
+        display: block;
+    }
+
+    #weekday {
+        font-size: 1.2rem;
+    }
+
+    .main__d-number-now,
+    .main__d-number {
+        font-size: 1.2rem;
+    }
+
+    .main__calendar-cells {
+        gap: 0.2rem;
+    }
+
+    .main__cell-dates {
+        padding: 0;
+        border: none;
+    }
 }

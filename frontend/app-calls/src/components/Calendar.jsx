@@ -1,11 +1,10 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import { DateTime } from 'luxon';
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group';
 
 import '../styles/calendar.css';
-import arrow from '../images/rectButton.svg';
 
 const Calendar = () => {
 
@@ -15,23 +14,17 @@ const Calendar = () => {
     }
 
     const PlusMonth = () => {
-        if (tap) {
-            setTap(false)
-            setTime(prev => prev.plus({ month: 1 }))
-            setShowMonth(prev => !prev);
-            setUpOrDown(1)
-            setDaysInM(0)
-        }
+        setTime(prev => prev.plus({ month: 1 }))
+        setShowMonth(prev => !prev);
+        setUpOrDown(1)
+        setDaysInM(0)
     }
 
     const MinusMonth = () => {
-        if (tap) {
-            setTap(false)
-            setTime(prev => prev.minus({ month: 1 }))
-            setShowMonth(prev => !prev);
-            setUpOrDown(2)
-            setDaysInM(0)
-        }
+        setTime(prev => prev.minus({ month: 1 }))
+        setShowMonth(prev => !prev);
+        setUpOrDown(2)
+        setDaysInM(0)
     }
 
     var [showMonth, setShowMonth] = useState(() => false);
@@ -39,7 +32,6 @@ const Calendar = () => {
     var [month, setMonth] = useState(() => time.toFormat('LLLL'));
     var [upOrDown, setUpOrDown] = useState(() => 0);
     var [daysInM, setDaysInM] = useState(() => 0);
-    var [tap, setTap] = useState(() => true);
     var [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
@@ -59,20 +51,11 @@ const Calendar = () => {
 
     useEffect(() => {
         if (daysInM < time.daysInMonth) {
-            if (daysInM === 0) {
-                setTimeout(() => {
-                    setDaysInM(prev => prev + 1)
-                }, 100)
-            }
-            else {
-                setTimeout(() => {
-                    setDaysInM(prev => prev + 1)
-                }, 1)
-            }
+            setTimeout(() => {
+                setDaysInM(prev => prev + 1)
+            }, 1)
         }
-        else {
-            setTap(true)
-        }
+        console.log(time.daysInMonth);
         console.log(daysInM)
     }, [daysInM])
 
@@ -97,16 +80,23 @@ const Calendar = () => {
             <div className='main__calendar-box'>
                 <div className='main__calendar'>
                     <ul className='main__weekdays'>
-                        <li id='weekday'>Понедельник</li>
-                        <li id='weekday'>Вторник</li>
-                        <li id='weekday'>Среда</li>
-                        <li id='weekday'>Четверг</li>
-                        <li id='weekday'>Пятница</li>
-                        <li id='weekday'>Суббота</li>
-                        <li id='weekday'>Воскресенье</li>
+                        <li id='weekday' className='land'>Понедельник</li>
+                        <li id='weekday' className='land'>Вторник</li>
+                        <li id='weekday' className='land'>Среда</li>
+                        <li id='weekday' className='land'>Четверг</li>
+                        <li id='weekday' className='land'>Пятница</li>
+                        <li id='weekday' className='land'>Суббота</li>
+                        <li id='weekday' className='land'>Воскресенье</li>
+                        <li id='weekday' className='port'>Пн</li>
+                        <li id='weekday' className='port'>Вт</li>
+                        <li id='weekday' className='port'>Ср</li>
+                        <li id='weekday' className='port'>Чт</li>
+                        <li id='weekday' className='port'>Пт</li>
+                        <li id='weekday' className='port'>Сб</li>
+                        <li id='weekday' className='port'>Вс</li>
                     </ul>
                     <div className="main__calendar-cells">
-                        {[...new Array(daysInM)].map((_, i) =>
+                        {new Array(daysInM).fill('').map((_, i) =>
                             <CellDates index={i} time={time} key={i} />
                         )}
                     </div>
