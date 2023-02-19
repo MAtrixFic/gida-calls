@@ -366,6 +366,9 @@
         grid-template-rows: minmax(100px, 160px) 1fr minmax(250px, 270px);
         row-gap: 1rem;
         height: 93%;
+        min-height: 300px;
+        max-height: 700px;
+        overflow-y: scroll;
     }
 
     .main__time-block {

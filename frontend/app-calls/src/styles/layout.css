@@ -201,6 +201,7 @@ body {
     body {
         grid-template-columns: 1fr;
         grid-template-rows: 1fr 80px;
+        background-color: #EAEDF2;
     }
 
     .main {
@@ -211,6 +212,8 @@ body {
     }
 
     .header {
+        background-color: white;
+        border-radius: 25px 25px 0 0;
         grid-row: 2/3;
         flex-direction: row;
         padding: 1rem;
