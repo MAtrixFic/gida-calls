@@ -22,7 +22,7 @@ const CalendarDay = () => {
     var [timeList, setTimeList] = useState(() => []);
 
     useEffect(() => {
-        console.log(gettingData)
+        // console.log(gettingData)
         let data = { first: [], second: [] };
         try {
             let indexFirst = 0;
@@ -48,9 +48,9 @@ const CalendarDay = () => {
             console.log(err)
         }
         setTimeList(data)
-        console.log(data)
+        // console.log(data)
     }, [gettingData])
-    console.log(timeList)
+    // console.log(timeList)
 
     function AddCellTime(number = '') {
         if (timeList[number].length < 8) {
@@ -78,7 +78,7 @@ const CalendarDay = () => {
         CreateACellTime(timeObj, 'first');
         CreateACellTime(timeObj, 'second');
         localStorage.copy = JSON.stringify(timeObj);
-        console.log(localStorage.copy)
+        // console.log(localStorage.copy)
     }
 
     function PastTime() {
@@ -126,7 +126,7 @@ const CalendarDay = () => {
 
     function GiveAccess() {
         setAccessToWrite(prev => !prev);
-        console.log(refInpValue)
+        // console.log(refInpValue)
     }
 
     function CreateACellTime(obj, group) {
@@ -154,7 +154,7 @@ const CalendarDay = () => {
         };
         CreateROW(dataOBJ, 'first')
         CreateROW(dataOBJ, 'second')
-        console.log(dataOBJ)
+        // console.log(dataOBJ)
         fetch('http://localhost:3001/calendar/dynamic', {
             headers: {
                 'Content-Type': "application/x-www-form-urlencoded",
@@ -170,12 +170,10 @@ const CalendarDay = () => {
 
     return (
         <>
-            <div className='main__date-box'>
-                <div className="main__date-calendar">
-                    <h1>Календарь <span className='main__date-date'>{thisTime.year}</span></h1>
-                    <button onClick={CopyTime}>Copy</button>
-                    <button disabled={(timeList?.first?.length === 0 && timeList?.second?.length === 0) ? false : true} onClick={PastTime}>Past</button>
-                </div>
+            <div className="main__date-calendar">
+                <h1>Календарь <span className='main__date-date'>{thisTime.year}</span></h1>
+                <button onClick={CopyTime}>Copy</button>
+                <button disabled={(timeList?.first?.length === 0 && timeList?.second?.length === 0) ? false : true} onClick={PastTime}>Past</button>
             </div>
             <div className="main__time-manager-box">
                 <div className="main__time-manager">
@@ -185,6 +183,7 @@ const CalendarDay = () => {
                             func_02={() => RemoveCellTime('first')} />
                         {timeList?.['first']?.map((v, i) =>
                             <CellTime
+                                key={i}
                                 callValue={v}
                                 ref={refInpValue}
                                 access={accessToWrite}
@@ -197,6 +196,7 @@ const CalendarDay = () => {
                             func_02={() => RemoveCellTime('second')} />
                         {timeList?.['second']?.map((v, i) =>
                             <CellTime
+                                key={i}
                                 callValue={v}
                                 ref={refInpValue}
                                 access={accessToWrite}

@@ -55,8 +55,7 @@ const Calendar = () => {
                 setDaysInM(prev => prev + 1)
             }, 1)
         }
-        console.log(time.daysInMonth);
-        console.log(daysInM)
+
     }, [daysInM])
 
     const monthsList = {
@@ -72,10 +71,8 @@ const Calendar = () => {
     }
     return (
         <>
-            <div className='main__date-box'>
-                <div className="main__date-calendar">
-                    <h1>Календарь <span className='main__date-date'>{time.toFormat('yyyy')}</span></h1>
-                </div>
+            <div className="main__date-calendar">
+                <h1>Календарь <span className='main__date-date'>{time.toFormat('yyyy')}</span></h1>
             </div>
             <div className='main__calendar-box'>
                 <div className='main__calendar'>

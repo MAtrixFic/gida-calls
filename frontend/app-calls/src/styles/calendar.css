@@ -340,8 +340,10 @@
 }
 
 @media all and (orientation: portrait) {
-    .main__date-box {
-        height: 5%;
+
+    .main__date-calendar{
+        justify-content: center;
+        align-items: center;
     }
 
     .main__calendar-box {
@@ -428,5 +430,11 @@
     .main__cell-dates {
         padding: 0;
         border: none;
+    }
+}
+
+@media all and (orientation: portrait) and (max-width: 500px) {
+    .main__date-calendar h1{
+        font-size: 2rem;
     }
 }
