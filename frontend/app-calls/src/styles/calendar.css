@@ -146,7 +146,7 @@
     width: 10%;
     min-width: 90px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     height: 100%;
 }
 
@@ -341,13 +341,22 @@
 
 @media all and (orientation: portrait) {
 
-    .main__date-calendar{
+    .main__date-calendar {
         justify-content: center;
         align-items: center;
     }
 
+    .main__cell-dates-now {
+        box-shadow: none;
+    }
+
+    .main__cell-dates-now:hover {
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+    }
+
     .main__calendar-box {
-        height: 93%;
+        align-self: self-start;
+        height: 100%;
         flex-direction: column;
         justify-content: space-between;
     }
@@ -434,7 +443,7 @@
 }
 
 @media all and (orientation: portrait) and (max-width: 500px) {
-    .main__date-calendar h1{
+    .main__date-calendar h1 {
         font-size: 2rem;
     }
 }

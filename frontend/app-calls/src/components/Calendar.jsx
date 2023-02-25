@@ -47,16 +47,8 @@ const Calendar = () => {
         setTimeout(() => {
             setMonth(time.toFormat('LLLL'));
         }, 200)
+        setDaysInM(time.daysInMonth)
     }, [time])
-
-    useEffect(() => {
-        if (daysInM < time.daysInMonth) {
-            setTimeout(() => {
-                setDaysInM(prev => prev + 1)
-            }, 1)
-        }
-
-    }, [daysInM])
 
     const monthsList = {
         appear: null,
@@ -92,7 +84,8 @@ const Calendar = () => {
                         <li id='weekday' className='port'>Сб</li>
                         <li id='weekday' className='port'>Вс</li>
                     </ul>
-                    <div className="main__calendar-cells">
+                    <div className={`main__calendar-cells ${upOrDown === 0 ?
+                        " " : upOrDown === 1 ? 'up' : 'down'}`} >
                         {new Array(daysInM).fill('').map((_, i) =>
                             <CellDates index={i} time={time} key={i} />
                         )}

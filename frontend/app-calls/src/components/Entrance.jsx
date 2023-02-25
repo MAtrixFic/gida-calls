@@ -1,30 +1,33 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SERVERIP } from './constantDatas/constsOfServer';
 import '../styles/entrance.css'
 
 const Entrance = () => {
+    const [serverIp] = useState(() => SERVERIP.local);
     var nickRef = useRef();
     var passwordRef = useRef();
     const nav = useNavigate()
     console.log(localStorage)
+    
     async function SendUserInfo(event) {
         await Request({
             username: nickRef.current.value,
             password: passwordRef.current.value
         }).then(data => {
             if (data.status === 'authenticated') {
-                console.log(data.status)
                 localStorage.setItem('auth', data.res)
                 localStorage.setItem('status', 'authorized')
                 nav('/calendar');
             }
-            else{
+            else {
                 alert(data.res)
             }
         });
     }
+
     async function Request(query = {}) {
-        const res = await fetch('http://localhost:3001/auth/log', {
+        const res = await fetch(`http://${serverIp}/auth/log`, {
             method: 'POST',
             body: new URLSearchParams(query),
             headers: {

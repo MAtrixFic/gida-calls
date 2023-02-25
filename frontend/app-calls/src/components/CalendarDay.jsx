@@ -5,6 +5,7 @@ import CellTime from './modifications/CellTime';
 import TimeBlock from './modifications/TimeBlock';
 import DateNow from './modifications/DateNow';
 import ControlButton from './modifications/ControlButton';
+import { SERVERIP } from './constantDatas/constsOfServer';
 
 import '../styles/calendarday.css';
 const CalendarDay = () => {
@@ -16,13 +17,13 @@ const CalendarDay = () => {
             Number(gotTime.day))
             .toLocal('ru'));
 
+    const [serverIp] = useState(() => SERVERIP.local);
     var [accessToWrite, setAccessToWrite] = useState(() => false); //доступ к изменению полей
-    var refInpValue = useRef({ first: {}, second: {} });//ссылка на поля инпут
+    var refInpValue = useRef({ first: {}, second: {} }); //ссылка на поля инпут
     var [gettingData, setGettingData] = useState(() => GetData('dynamic').then(data => setGettingData(data)));//получение расписания
     var [timeList, setTimeList] = useState(() => []);
 
     useEffect(() => {
-        // console.log(gettingData)
         let data = { first: [], second: [] };
         try {
             let indexFirst = 0;
@@ -45,12 +46,10 @@ const CalendarDay = () => {
             }
         }
         catch (err) {
-            console.log(err)
+            console.log('error')
         }
         setTimeList(data)
-        // console.log(data)
     }, [gettingData])
-    // console.log(timeList)
 
     function AddCellTime(number = '') {
         if (timeList[number].length < 8) {
@@ -78,7 +77,6 @@ const CalendarDay = () => {
         CreateACellTime(timeObj, 'first');
         CreateACellTime(timeObj, 'second');
         localStorage.copy = JSON.stringify(timeObj);
-        // console.log(localStorage.copy)
     }
 
     function PastTime() {
@@ -89,7 +87,7 @@ const CalendarDay = () => {
         if (update) ResetAllTime();
         let prom;
         if (type === 'static') {
-            prom = await fetch(`http://localhost:3001/calendar/${type}?` + new URLSearchParams({
+            prom = await fetch(`http://${serverIp}/calendar/${type}?` + new URLSearchParams({
                 weekDay: thisTime.weekdayLong
             }), {
                 headers: {
@@ -98,7 +96,7 @@ const CalendarDay = () => {
             });
         }
         else if (type === 'dynamic') {
-            prom = await fetch(`http://localhost:3001/calendar/${type}?` + new URLSearchParams({
+            prom = await fetch(`http://${serverIp}/calendar/${type}?` + new URLSearchParams({
                 weekDay: thisTime.weekdayLong,
                 day: gotTime.day,
                 month: gotTime.month,
@@ -126,7 +124,6 @@ const CalendarDay = () => {
 
     function GiveAccess() {
         setAccessToWrite(prev => !prev);
-        // console.log(refInpValue)
     }
 
     function CreateACellTime(obj, group) {
@@ -154,8 +151,7 @@ const CalendarDay = () => {
         };
         CreateROW(dataOBJ, 'first')
         CreateROW(dataOBJ, 'second')
-        // console.log(dataOBJ)
-        fetch('http://localhost:3001/calendar/dynamic', {
+        fetch(`http://${serverIp}/calendar/dynamic`, {
             headers: {
                 'Content-Type': "application/x-www-form-urlencoded",
                 "Authorization": localStorage?.auth

@@ -7,13 +7,13 @@ const opsions = {
 
 module.exports = passport => {
     passport.use(
-        new Strategy(opsions, (payload, done)=>{
-            const authConnection = new ShcoolBell('localhost', 'MAtrix', 'M1000110Atrix', 'school_bell').connection;
-            authConnection.query(`SELECT * FROM users WHERE userName = "${payload.username}"`,(err, result)=>{
-                if(result){
+        new Strategy(opsions, (payload, done) => {
+            const authConnection = new ShcoolBell();
+            authConnection.SelectUserPassport({ username: payload.username }).then(result => {
+                if (result) {
                     done(null, result);
                 }
-                else{
+                else {
                     done(null, false);
                 }
             })

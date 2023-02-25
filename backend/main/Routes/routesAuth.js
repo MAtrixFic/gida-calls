@@ -5,11 +5,11 @@ const jwt = require('jsonwebtoken');
 
 authRouter.post('/log', async (req, res) => {
     const { username, password } = req.body;
-    const authConnection = new ShcoolBell().connection;
-    authConnection.query(`SELECT userName, userPassword, role FROM users WHERE userName = "${username}"`, (err, result) => {
+    const authConnection = new ShcoolBell();
+    authConnection.SelectUser({ username }).then(result => {
         if (result[0] === undefined) {
             res.send({
-                res: 'Неправильный Логин',
+                res: 'Неверные данные!',
                 status: 'unauthenticated'
             })
         }
@@ -23,7 +23,7 @@ authRouter.post('/log', async (req, res) => {
             }
             else {
                 res.send({
-                    res: 'Неправильный Пароль',
+                    res: 'Неверные данные!',
                     status: 'unauthenticated'
                 })
             }
