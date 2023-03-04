@@ -124,7 +124,7 @@ const CellDates = (props) => {
     const time = props.time;
     const index = props.index;
     const timeToday = time.minus({ days: time.day - (index + 1) })
-    const link = `date/${timeToday.toFormat('dd')}/${timeToday.toFormat('MM')}/${timeToday.year}`;
+    const link = `menu/${timeToday.toFormat('dd')}/${timeToday.toFormat('MM')}/${timeToday.year}`;
     const isNow = DateTime.local().setLocale('ru').toFormat('yyyy-MM-dd') === timeToday.toFormat('yyyy-MM-dd');
     function ItsHoliday(event) {
         event.preventDefault();

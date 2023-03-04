@@ -167,7 +167,7 @@ const CalendarDay = () => {
     return (
         <>
             <div className="main__date-calendar">
-                <h1>Календарь <span className='main__date-date'>{thisTime.year}</span></h1>
+                <h1>Звонки</h1>
                 <button onClick={CopyTime}>Copy</button>
                 <button disabled={(timeList?.first?.length === 0 && timeList?.second?.length === 0) ? false : true} onClick={PastTime}>Past</button>
             </div>
