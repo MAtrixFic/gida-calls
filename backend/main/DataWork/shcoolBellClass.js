@@ -1,4 +1,5 @@
 const db_plus = require('mysql-plus');
+const time = require('luxon').DateTime;
 
 class ShcoolBell {
     constructor() {
@@ -73,6 +74,20 @@ class ShcoolBell {
     async SelectUserPassport({ username }) {
         const result = await this.tables.users.select('*', `WHERE userName = "${username}"`);
         return result;
+    }
+
+    async DeleteTime() {
+        let date = time.local().toLocal('ru')
+        this.tables.dynamicdays.delete(`WHERE definiteDate < "${date.toFormat('yyyy-MM-dd')}"`).then(res => {
+            if(res.affectedRows === 0){
+                console.log(`Нет данных для удаления!`, `время: ${date.toFormat('HH:mm:ss')}`);
+            }
+            else{
+                console.log(`Удаление произошло успешно! Количество удаленных строк: ${res.affectedRows}.`, `время: ${date.toFormat('HH:mm:ss')}`);
+            }
+        }).catch(() => {
+            console.log('Произошла ошибка при удалении!', `время: ${date.toFormat('HH:mm:ss')}`);
+        })
     }
 }
 
