@@ -120,12 +120,12 @@
     border: 2px solid #8B96D3;
 }
 
-.main__lesson-list li {
+.main__lesson-taking {
     font-size: 1.75rem;
     font-weight: 600;
-    color: #8896D9;
+    color: #E1E2E2;
     border-radius: 10px;
-    border: 2px solid #8896D9;
+    border: 2px solid #E1E2E2;
     display: flex;
     padding: 0 1rem;
     justify-content: start;
@@ -133,12 +133,17 @@
     transition-duration: 0.3s;
 }
 
-.main__lesson-list li:hover {
+.main__lessons-list.active .main__lesson-taking{
+    border-color: #8B96D3;
+    color: #8B96D3;
+}
+
+.main__lessons-list.active .main__lesson-taking:hover{
     background-color: #8B96D3;
     color: white;
 }
 
-.main__lesson-list {
+.main__lessons-list {
     gap: 1rem;
     padding: 0.5rem;
     overflow-y: auto;
@@ -149,12 +154,12 @@
     grid-auto-rows: minmax(40px, 50px);
 }
 
-.main__lesson-list::-webkit-scrollbar {
+.main__lessons-list::-webkit-scrollbar {
     width: 10px;
     background-color: #8B96D3;
 }
 
-.main__lesson-list::-webkit-scrollbar-thumb {
+.main__lessons-list::-webkit-scrollbar-thumb {
     background-color: white;
     border: 2px solid #8B96D3;
 }

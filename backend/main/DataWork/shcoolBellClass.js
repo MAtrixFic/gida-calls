@@ -42,7 +42,36 @@ class ShcoolBell {
                     userPassword: db_plus.ColTypes.varchar(100),
                     role: db_plus.ColTypes.varchar(20)
                 }
-            })
+            }),
+            schoolclass: this.pool.defineTable('classes', {
+                columns: {
+                    id: db_plus.ColTypes.int(),
+                    number: db_plus.ColTypes.int(),
+                    letter: db_plus.ColTypes.char(1)
+                }
+            }),
+            staticlessons: this.pool.defineTable('staticlessons', {
+                columns: {
+                    id: db_plus.ColTypes.int(),
+                    lessons: db_plus.ColTypes.varchar(200),
+                    weekDay: db_plus.ColTypes.varchar(20),
+                    class_id: db_plus.ColTypes.int()
+                }
+            }),
+            dynamiclessons: this.pool.defineTable('dynamiclessons', {
+                columns: {
+                    id: db_plus.ColTypes.int(),
+                    lessons: db_plus.ColTypes.varchar(200),
+                    date: db_plus.ColTypes.date(),
+                    class_id: db_plus.ColTypes.int()
+                }
+            }),
+            lessonslist: this.pool.defineTable('lessonslist', {
+                columns: {
+                    id: db_plus.ColTypes.int(),
+                    name: db_plus.ColTypes.varchar(30)
+                }
+            }),
         }
     }
 
@@ -79,15 +108,25 @@ class ShcoolBell {
     async DeleteTime() {
         let date = time.local().toLocal('ru')
         this.tables.dynamicdays.delete(`WHERE definiteDate < "${date.toFormat('yyyy-MM-dd')}"`).then(res => {
-            if(res.affectedRows === 0){
+            if (res.affectedRows === 0) {
                 console.log(`Нет данных для удаления!`, `время: ${date.toFormat('HH:mm:ss')}`);
             }
-            else{
+            else {
                 console.log(`Удаление произошло успешно! Количество удаленных строк: ${res.affectedRows}.`, `время: ${date.toFormat('HH:mm:ss')}`);
             }
         }).catch(() => {
             console.log('Произошла ошибка при удалении!', `время: ${date.toFormat('HH:mm:ss')}`);
         })
+    }
+
+    async SelectClasses() {
+        const result = await this.tables.schoolclass.select('number, letter');
+        return result;
+    }
+
+    async SelectLessonsList(){
+        const result = await this.tables.lessonslist.select('name');
+        return result;
     }
 }
 

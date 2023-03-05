@@ -59,4 +59,38 @@ async function PutDynamic(req, res) {
     connectionDynamic.ReplaceDynamicSchedule({ date, first, second }).then(res.sendStatus(200));
 }
 
-module.exports = { GetDynamic, GetStatic, PutDynamic, GetDynamicNow }
+async function GetClasses(req, res) {
+    const connectionToClasses = new ShcoolBell();
+    let arrayClasses = [];
+    await connectionToClasses.SelectClasses().then(result => {
+        try{
+            for(let i of result){
+                arrayClasses.push(i.number + i.letter)
+            }
+            res.send(JSON.stringify(arrayClasses));
+        }
+        catch{
+            console.log("Нет данных")
+            res.sendStatus(404);
+        }
+    });
+}
+
+async function GetLessonsList(req, res) {
+    const connectionToLessonsLis = new ShcoolBell();
+    let arrayLessons = [];
+    await connectionToLessonsLis.SelectLessonsList().then(result => {
+        try{
+            for(let i of result){
+                arrayLessons.push(i.name)
+            }
+            res.send(JSON.stringify(arrayLessons));
+        }
+        catch{
+            console.log("Нет данных")
+            res.sendStatus(404);
+        }
+    });
+}
+
+module.exports = { GetDynamic, GetStatic, PutDynamic, GetDynamicNow, GetClasses, GetLessonsList }

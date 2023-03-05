@@ -2,7 +2,7 @@ const cors = require('cors');
 const express = require('express');
 
 const CORSES = cors({
-    origin: 'http://localhost:3000',
+    origin: '*',
     optionsSuccessStatus: 200,
 })
 const PORT = process.env.PORT || 3001;
