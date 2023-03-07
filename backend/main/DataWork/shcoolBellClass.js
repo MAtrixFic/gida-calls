@@ -120,13 +120,24 @@ class ShcoolBell {
     }
 
     async SelectClasses() {
-        const result = await this.tables.schoolclass.select('number, letter');
+        const result = await this.tables.schoolclass.select('number, letter', 'ORDER BY number, letter');
         return result;
     }
 
-    async SelectLessonsList(){
-        const result = await this.tables.lessonslist.select('name');
+    async SelectLessonsList() {
+        const result = await this.tables.lessonslist.select('name', 'ORDER BY name');
         return result;
+    }
+
+    async SelectClassShedule(weekDay, className) {
+        const classId = await this.tables.schoolclass.select('id', `WHERE number = ${className[0]} and letter = "${className[1]}"`);
+        try {
+            const result = await this.tables.staticlessons.select('lessons', `WHERE weekDay = "${weekDay}" AND class_id = "${classId[0].id}"`);
+            return result;
+        }
+        catch {
+            return 'error'
+        }
     }
 }
 

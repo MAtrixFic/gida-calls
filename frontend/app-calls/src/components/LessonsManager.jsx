@@ -12,7 +12,7 @@ const LessonsManager = () => {
     )
 
     let [emptyLessonSign] = useState(() => '_')
-    let [lessons, setLessons] = useState(() => ['Математика', 'Математика', 'Информатика', 'Информатика', 'История', 'История', 'ОБЖ', '_', '_', '_'])
+
     let lessonsRef = useRef([]);
     let [changing, setChanging] = useState(() => false);
     let [indexChanging, setIndexChanging] = useState(() => 0);
@@ -22,6 +22,19 @@ const LessonsManager = () => {
 
     let [lessonsListget, setLessonsListget] = useState(() => GetData('lessons/lessonslist').then(data => setLessonsListget(data)));//запрос для уроков
     let [lessonsList, setLessonsList] = useState(() => []);//список уроков
+
+    let [className, setClassName] = useState(() => {
+        let cn = localStorage.getItem('className');
+        if(cn === null){
+            return '1А'
+        }
+        else{
+            return cn
+        }
+    });
+    let [lessons, setLessons] = useState(() => {
+            GetClassShedule(className);
+    })
 
     useEffect(() => {
         if (typeof classes[0] === 'string') {
@@ -35,8 +48,8 @@ const LessonsManager = () => {
         }
     }, [lessonsListget])
 
-    async function GetData(path) {
-        let res = await fetch(`http://${SERVERIP.local}/${path}`);
+    async function GetData(path, params = null) {
+        let res = await fetch(`http://${SERVERIP.local}/${path}`, params);
         return await res.json();
     }
 
@@ -72,14 +85,36 @@ const LessonsManager = () => {
         setLessons(copy);
     }
 
+    function GetClassShedule(className){
+        GetData(`lessons/classes/${className}?` + new URLSearchParams({ weekDay: correctDate.weekdayLong, day: time.day, month: time.month, year: time.year })).then(data =>{
+            if(data.res !== 'empty'){
+                let datalist = data.res.split(', ');
+                let len = datalist.length;
+                for (let i = 0; i < (10 - len); i++){
+                    datalist.push(emptyLessonSign)
+                }
+                setLessons(datalist)
+            }
+            else{
+                setLessons(['_', '_', '_', '_', '_', '_', '_', '_', '_', '_'])
+            }
+        })
+    }
+
+    function SelectCorrectClass(e){
+        setClassName(e.target.innerText);
+        GetClassShedule(e.target.innerText);
+        localStorage.setItem("className", e.target.innerText);
+    }
+
     return (
         <div className='main__lesson-manager-box' onClick={RedactLessons}>
             <div className="main__lessons-panel-box">
-                <div className="main__block-name">
-                    <h1>Уроки</h1>
+                <div className="main__block-name-box">
+                    <h1 className="main__block-name">Уроки <span className="main__block-chapter">{className}</span></h1>
                 </div>
                 <div className="main__lessons-managment">
-                    {lessons.map((el, i) => {
+                    {lessons?.map((el, i) => {
                         if (el === emptyLessonSign) {
                             return <div ref={current => lessonsRef.current[i] = current} onClick={() => AllowChanging(i)} key={i} className='main__lessons-plus'>{'+'}
                             </div>
@@ -109,7 +144,7 @@ const LessonsManager = () => {
                     {lessonsList?.map((el, i) => <li key={i} className='main__lesson-taking'>{el}</li>)}
                 </ul>
                 <ul className="main__classes-list">
-                    {classesList?.map((el, i) => <li key={i}>{el}</li>)}
+                    {classesList?.map((el, i) => <li onClick={SelectCorrectClass} key={i}>{el}</li>)}
                 </ul>
                 <button className="main__send-info-button">
                     ОТПРАВИТЬ

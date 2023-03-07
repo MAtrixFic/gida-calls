@@ -63,13 +63,13 @@ async function GetClasses(req, res) {
     const connectionToClasses = new ShcoolBell();
     let arrayClasses = [];
     await connectionToClasses.SelectClasses().then(result => {
-        try{
-            for(let i of result){
+        try {
+            for (let i of result) {
                 arrayClasses.push(i.number + i.letter)
             }
             res.send(JSON.stringify(arrayClasses));
         }
-        catch{
+        catch {
             console.log("Нет данных")
             res.sendStatus(404);
         }
@@ -80,17 +80,32 @@ async function GetLessonsList(req, res) {
     const connectionToLessonsLis = new ShcoolBell();
     let arrayLessons = [];
     await connectionToLessonsLis.SelectLessonsList().then(result => {
-        try{
-            for(let i of result){
+        try {
+            for (let i of result) {
                 arrayLessons.push(i.name)
             }
             res.send(JSON.stringify(arrayLessons));
         }
-        catch{
+        catch {
             console.log("Нет данных")
             res.sendStatus(404);
         }
     });
 }
 
-module.exports = { GetDynamic, GetStatic, PutDynamic, GetDynamicNow, GetClasses, GetLessonsList }
+async function GetClassShedule(req, res) {
+    console.log(req.query, req.params);
+    let { weekDay } = req.query;
+    let className = req.params.class;
+    const connectionToClassShedule = new ShcoolBell();
+    await connectionToClassShedule.SelectClassShedule(weekDay, className).then(result => {
+        try{
+            res.send(JSON.stringify({ res: result[0].lessons }));
+        }
+        catch{
+            res.send({res: 'empty'})
+        }
+    });
+}
+
+module.exports = { GetDynamic, GetStatic, PutDynamic, GetDynamicNow, GetClasses, GetLessonsList, GetClassShedule }

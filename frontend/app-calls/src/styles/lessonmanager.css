@@ -31,10 +31,19 @@
     gap: 1rem;
 }
 
-.main__block-name h1 {
+.main__block-name {
     font-size: 4rem;
     font-weight: 500;
     color: #1D232D;
+}
+
+.main__block-chapter{
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    color: #8C96D0;
+    border:2px solid #E1E2E2;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+    background-color: white;
 }
 
 .main__correct-date-box {
@@ -113,15 +122,17 @@
 .main__classes-list::-webkit-scrollbar {
     height: 10px;
     background-color: #8B96D3;
+    border-radius: 2px;
 }
 
 .main__classes-list::-webkit-scrollbar-thumb {
     background-color: white;
     border: 2px solid #8B96D3;
+    border-radius: 4px;
 }
 
 .main__lesson-taking {
-    font-size: 1.75rem;
+    font-size: 1.4rem;
     font-weight: 600;
     color: #E1E2E2;
     border-radius: 10px;
@@ -157,11 +168,13 @@
 .main__lessons-list::-webkit-scrollbar {
     width: 10px;
     background-color: #8B96D3;
+    border-radius: 2px;
 }
 
 .main__lessons-list::-webkit-scrollbar-thumb {
     background-color: white;
     border: 2px solid #8B96D3;
+    border-radius: 4px;
 }
 
 .main__lessons-managment {
