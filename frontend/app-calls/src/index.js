@@ -6,8 +6,6 @@ import App from './App';
 const bodyEl = ReactDOM.createRoot(document.querySelector('body'));
 bodyEl.render(
   <BrowserRouter>
-    <React.StrictMode>
       <App />
-    </React.StrictMode>
   </BrowserRouter>
 );

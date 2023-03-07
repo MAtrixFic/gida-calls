@@ -18,7 +18,7 @@ function App() {
         <Route path='voting' element={<Voting />} />
         <Route path='calendar/menu/:day/:month/:year' element={<CalendarMenu />} />
         <Route path='/main/calendar/bells/dynamic/:day/:month/:year' element={<CalendarDay />} />
-        <Route path='/main/calendar/lessons/static/:day/:month/:year' element={<LessonsManager />} />
+        <Route path='/main/calendar/lessons/:type/:day/:month/:year' element={<LessonsManager />} />
       </Route>
       <Route path='*' element={<Navigate to='/main/calendar' replace={true} />} />
     </Routes>

@@ -94,18 +94,33 @@ async function GetLessonsList(req, res) {
 }
 
 async function GetClassShedule(req, res) {
-    console.log(req.query, req.params);
-    let { weekDay } = req.query;
-    let className = req.params.class;
+    const { year, month, day, weekDay } = req.query;
+    const className = req.params.class;
+    const type = req.params.type;
+    const date = `${year}-${month}-${day}`
     const connectionToClassShedule = new ShcoolBell();
-    await connectionToClassShedule.SelectClassShedule(weekDay, className).then(result => {
-        try{
+    await connectionToClassShedule.SelectClassShedule(type, date, weekDay, className).then(result => {
+        try {
             res.send(JSON.stringify({ res: result[0].lessons }));
         }
-        catch{
-            res.send({res: 'empty'})
+        catch {
+            res.send({ res: 'empty' })
         }
     });
 }
 
-module.exports = { GetDynamic, GetStatic, PutDynamic, GetDynamicNow, GetClasses, GetLessonsList, GetClassShedule }
+async function SetClassShedule(req, res) {
+    const { data, weekDay, day, month, year } = req.body;
+    const className = req.params.class;
+    let doneData = '';
+    let dataArr = data.split(',')
+    for (let i of dataArr) {
+        doneData += `${i}, `
+    }
+    doneData = doneData.slice(0, -2);
+    const connectionToClassShedule = new ShcoolBell();
+    await connectionToClassShedule.PutClassShedule(doneData, weekDay, className);
+    res.sendStatus(200);
+}
+
+module.exports = { GetDynamic, GetStatic, PutDynamic, GetDynamicNow, GetClasses, GetLessonsList, GetClassShedule, SetClassShedule }

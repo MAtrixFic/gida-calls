@@ -14,7 +14,7 @@ const CalendarMenu = () => {
         {
             name: 'Уроки',
             sPath: `/main/calendar/lessons/static/${day}/${month}/${year}`,
-            dPath: `#`
+            dPath: `/main/calendar/lessons/dynamic/${day}/${month}/${year}`
         }]);
     const [countOfArrayOfChoise, setCountOfArrayOfChoise] = useState(() => 0);
     useEffect(() => {

@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../styles/lessonmanager.css';
 import { DateTime } from 'luxon';
 import { SERVERIP } from './constantDatas/constsOfServer';
 
 const LessonsManager = () => {
 
-    const time = useParams();
+    const params = useParams();
     const [correctDate] = useState(() =>
-        DateTime.local(Number(time.year), Number(time.month), Number(time.day)).setLocale('ru')
+        DateTime.local(Number(params.year), Number(params.month), Number(params.day)).setLocale('ru')
     )
 
     let [emptyLessonSign] = useState(() => '_')
+    const nav = useNavigate();
 
     let lessonsRef = useRef([]);
     let [changing, setChanging] = useState(() => false);
@@ -25,15 +27,15 @@ const LessonsManager = () => {
 
     let [className, setClassName] = useState(() => {
         let cn = localStorage.getItem('className');
-        if(cn === null){
+        if (cn === null) {
             return '1А'
         }
-        else{
+        else {
             return cn
         }
     });
     let [lessons, setLessons] = useState(() => {
-            GetClassShedule(className);
+        GetClassShedule(className);
     })
 
     useEffect(() => {
@@ -48,9 +50,12 @@ const LessonsManager = () => {
         }
     }, [lessonsListget])
 
-    async function GetData(path, params = null) {
+    async function GetData(path, params = null, getOrSend = false) {
         let res = await fetch(`http://${SERVERIP.local}/${path}`, params);
-        return await res.json();
+        if (!getOrSend)
+            return await res.json();
+        else
+            return await res;
     }
 
     function RedactLessons(event) {
@@ -85,23 +90,52 @@ const LessonsManager = () => {
         setLessons(copy);
     }
 
-    function GetClassShedule(className){
-        GetData(`lessons/classes/${className}?` + new URLSearchParams({ weekDay: correctDate.weekdayLong, day: time.day, month: time.month, year: time.year })).then(data =>{
-            if(data.res !== 'empty'){
+    function GetClassShedule(className) {
+        GetData(`lessons/classes/${params.type}/${className}?` + new URLSearchParams({ weekDay: correctDate.weekdayLong, day: params.day, month: params.month, year: params.year })).then(data => {
+            if (data.res !== 'empty') {
                 let datalist = data.res.split(', ');
                 let len = datalist.length;
-                for (let i = 0; i < (10 - len); i++){
+                console.log(len)
+                for (let i = 0; i < (10 - len); i++) {
                     datalist.push(emptyLessonSign)
                 }
                 setLessons(datalist)
             }
-            else{
+            else {
                 setLessons(['_', '_', '_', '_', '_', '_', '_', '_', '_', '_'])
             }
         })
     }
 
-    function SelectCorrectClass(e){
+    function SendClassShedule() {
+        console.log({
+            data: lessons,
+            weekDay: correctDate.weekdayLong,
+            day: params.day,
+            month: params.month,
+            year: params.year
+        })
+        GetData(`lessons/classes/${className}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams({
+                data: lessons,
+                weekDay: correctDate.weekdayLong,
+                day: params.day,
+                month: params.month,
+                year: params.year
+            })
+        }, true).then(res => res.status === 200 ? LeaveOrStand() : alert('Ошибка!'))
+    }
+
+    function LeaveOrStand(){
+        let res = window.confirm('Данные изменены! Выйти?');
+        res ? nav(-1) : nav();
+    }
+
+    function SelectCorrectClass(e) {
         setClassName(e.target.innerText);
         GetClassShedule(e.target.innerText);
         localStorage.setItem("className", e.target.innerText);
@@ -146,7 +180,7 @@ const LessonsManager = () => {
                 <ul className="main__classes-list">
                     {classesList?.map((el, i) => <li onClick={SelectCorrectClass} key={i}>{el}</li>)}
                 </ul>
-                <button className="main__send-info-button">
+                <button className="main__send-info-button" onClick={SendClassShedule}>
                     ОТПРАВИТЬ
                 </button>
             </div>
