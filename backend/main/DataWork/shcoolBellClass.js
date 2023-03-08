@@ -80,11 +80,11 @@ class ShcoolBell {
         return result;
     }
 
-    async SelectDynamicSchedule({ weekDay, year, month, day }) {
+    async SelectDynamicSchedule({ year, month, day }) {
         let convertDate = `${year}-${month}-${day}`;
         const dynamicResult = await this.tables.dynamicdays.select('firstTime, secondTime', `WHERE definiteDate = "${convertDate}"`);
         if (dynamicResult[0] === undefined) {
-            return await this.SelectStaticSchedule(weekDay);
+            return 'error';
         }
         else {
             return dynamicResult;
@@ -92,7 +92,12 @@ class ShcoolBell {
     }
 
     async ReplaceDynamicSchedule({ date, first, second }) {
-        await this.tables.dynamicdays.query(`REPLACE dynamicdays(definiteDate, firstTime, secondTime) VALUES("${date}","${first}","${second}")`);
+        await this.tables.dynamicdays.query(`REPLACE dynamicdays(definiteDate, firstTime, secondTime) VALUES("${date}","${first}","${second}")`).then(res=> console.log(res));
+    }
+
+    async ReplaceStaticSchedule({ weekDay, first, second }) {
+        console.log(weekDay)
+        await this.tables.staticdays.query(`REPLACE staticdays(dateWeekDay, firstTime, secondTime) VALUES("${weekDay}","${first}","${second}")`);
     }
 
     async SelectUser({ username }) {
@@ -132,11 +137,11 @@ class ShcoolBell {
     async SelectClassShedule(type, date, weekDay, className) {
         const classId = await this.tables.schoolclass.select('id', `WHERE number = ${className[0]} and letter = "${className[1]}"`);
         try {
-            if(type ==='static'){
+            if (type === 'static') {
                 const result = await this.tables.staticlessons.select('lessons', `WHERE weekDay = "${weekDay}" AND class_id = "${classId[0].id}"`);
                 return result;
             }
-            else if(type === 'dynamic'){
+            else if (type === 'dynamic') {
                 const result = await this.tables.dynamiclessons.select('lessons', `WHERE date = "${date}" AND class_id = "${classId[0].id}"`);
                 return result;
             }
@@ -146,15 +151,23 @@ class ShcoolBell {
         }
     }
 
-    async PutClassShedule(data ,weekDay, className){
+    async PutClassShedule(type, data, weekDay, date, className) {
         const classId = await this.tables.schoolclass.select('id', `WHERE number = ${className[0]} and letter = "${className[1]}"`);
         try {
-            const result = await this.tables.staticlessons.update({lessons: data},`WHERE weekDay = "${weekDay}" AND class_id = "${classId[0].id}"`);
-            if(result.affectedRows === 0){
-                await this.tables.staticlessons.insert(`(weekDay, lessons, class_id) VALUES("${weekDay}","${data}","${classId[0].id}")`);
+            if (type === 'dynamic') {
+                const result = await this.tables.dynamiclessons.update({ lessons: data }, `WHERE date = "${date}" AND class_id = "${classId[0].id}"`);
+                if (result.affectedRows === 0) {
+                    await this.tables.dynamiclessons.insert(`(date, lessons, class_id) VALUES("${date}","${data}","${classId[0].id}")`);
+                }
+            }
+            else if (type === 'static') {
+                const result = await this.tables.staticlessons.update({ lessons: data }, `WHERE weekDay = "${weekDay}" AND class_id = "${classId[0].id}"`);
+                if (result.affectedRows === 0) {
+                    await this.tables.staticlessons.insert(`(weekDay, lessons, class_id) VALUES("${weekDay}","${data}","${classId[0].id}")`);
+                }
             }
         }
-        catch (ex){
+        catch (ex) {
             console.log(ex);
             return 'error'
         }

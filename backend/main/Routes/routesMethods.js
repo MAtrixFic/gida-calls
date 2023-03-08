@@ -4,17 +4,17 @@ const ShcoolBell = require('../DataWork/shcoolBellClass');
 
 async function GetDynamic(req, res) {
     console.log(req.query)
-    const { weekDay, day, month, year } = req.query;
+    const { day, month, year } = req.query;
     const connectionDynamic = new ShcoolBell();
-    await connectionDynamic.SelectDynamicSchedule({ weekDay, year, month, day }).then(data => {
-        try {
+    await connectionDynamic.SelectDynamicSchedule({ year, month, day }).then(data => {
+        if (data === "error") {
+            res.send({ res: 'empty' });
+        }
+        else {
             res.send({
                 first: data[0].firstTime,
                 second: data[0].secondTime
             })
-        }
-        catch {
-            res.sendStatus(406)
         }
     })
 }
@@ -31,7 +31,8 @@ async function GetStatic(req, res) {
             })
         }
         catch {
-            res.sendStatus(406)
+            console.log('empty');
+            res.send({ res: 'empty' });
         }
     });
 }
@@ -42,12 +43,24 @@ async function GetDynamicNow(req, res) {
     const weekDay = timeNow.weekdayLong;
     let row = timeNow.toFormat('ssmmHHddMMyyyy88880755');
     var dbConnection = new ShcoolBell();
-    dbConnection.SelectDynamicSchedule({ weekDay, year, month, day }).then(data => {
-        try {
-            res.send(row + data[0].firstTime + data[0].secondTime)
+    dbConnection.SelectDynamicSchedule({ year, month, day }).then(dataD => {
+        if (dataD === 'empty') {
+            dbConnection.SelectStaticSchedule(weekDay).then(dataS => {
+                try {
+                    res.send(row + dataS[0].firstTime + dataS[0].secondTime)
+                }
+                catch {
+                    res.sendStatus(406)
+                }
+            })
         }
-        catch {
-            res.sendStatus(406)
+        else {
+            try {
+                res.send(row + dataD[0].firstTime + dataD[0].secondTime)
+            }
+            catch {
+                res.sendStatus(406)
+            }
         }
     })
 }
@@ -57,6 +70,13 @@ async function PutDynamic(req, res) {
     const { date, first, second } = req.body;
     const connectionDynamic = new ShcoolBell();
     connectionDynamic.ReplaceDynamicSchedule({ date, first, second }).then(res.sendStatus(200));
+}
+
+async function PutStatic(req, res) {
+    const { weekday, first, second } = req.body;
+    console.log(req.body)
+    const connectionStatic = new ShcoolBell();
+    connectionStatic.ReplaceStaticSchedule({ weekDay: weekday, first, second }).then(res.sendStatus(200));
 }
 
 async function GetClasses(req, res) {
@@ -112,15 +132,18 @@ async function GetClassShedule(req, res) {
 async function SetClassShedule(req, res) {
     const { data, weekDay, day, month, year } = req.body;
     const className = req.params.class;
+    const type = req.params.type;
+    console.log(req.body, req.params)
     let doneData = '';
     let dataArr = data.split(',')
+    const correctDate = `${year}-${month}-${day}`
     for (let i of dataArr) {
         doneData += `${i}, `
     }
     doneData = doneData.slice(0, -2);
     const connectionToClassShedule = new ShcoolBell();
-    await connectionToClassShedule.PutClassShedule(doneData, weekDay, className);
+    await connectionToClassShedule.PutClassShedule(type, doneData, weekDay, correctDate, className);
     res.sendStatus(200);
 }
 
-module.exports = { GetDynamic, GetStatic, PutDynamic, GetDynamicNow, GetClasses, GetLessonsList, GetClassShedule, SetClassShedule }
+module.exports = { GetDynamic, GetStatic, PutDynamic, GetDynamicNow, GetClasses, GetLessonsList, GetClassShedule, SetClassShedule, PutStatic }

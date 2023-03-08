@@ -6,6 +6,6 @@ const { GetClasses, GetLessonsList, GetClassShedule, SetClassShedule } = require
 lesRouter.get('/classes', GetClasses);
 lesRouter.get('/lessonslist', GetLessonsList);
 lesRouter.get('/classes/:type/:class', GetClassShedule);
-lesRouter.put('/classes/:class', SetClassShedule);
+lesRouter.put('/classes/:type/:class', auth, SetClassShedule);
 
 module.exports = lesRouter;

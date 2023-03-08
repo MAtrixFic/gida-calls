@@ -91,7 +91,7 @@ const LessonsManager = () => {
     }
 
     function GetClassShedule(className) {
-        GetData(`lessons/classes/${params.type}/${className}?` + new URLSearchParams({ weekDay: correctDate.weekdayLong, day: params.day, month: params.month, year: params.year })).then(data => {
+        GetData(`lessons/classes/${params.type}/${className}?` + new URLSearchParams({ weekDay: params.type === 'static' ? params.weekday : correctDate.weekdayLong, day: params.day, month: params.month, year: params.year })).then(data => {
             if (data.res !== 'empty') {
                 let datalist = data.res.split(', ');
                 let len = datalist.length;
@@ -115,14 +115,15 @@ const LessonsManager = () => {
             month: params.month,
             year: params.year
         })
-        GetData(`lessons/classes/${className}`, {
+        GetData(`lessons/classes/${params.type}/${className}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': "application/x-www-form-urlencoded",
+                "Authorization": localStorage?.auth
             },
             body: new URLSearchParams({
                 data: lessons,
-                weekDay: correctDate.weekdayLong,
+                weekDay: params.type ==='dynamic' ? correctDate.weekdayLong : params.weekday,
                 day: params.day,
                 month: params.month,
                 year: params.year
@@ -130,7 +131,7 @@ const LessonsManager = () => {
         }, true).then(res => res.status === 200 ? LeaveOrStand() : alert('Ошибка!'))
     }
 
-    function LeaveOrStand(){
+    function LeaveOrStand() {
         let res = window.confirm('Данные изменены! Выйти?');
         res ? nav(-1) : nav();
     }
@@ -185,9 +186,18 @@ const LessonsManager = () => {
                 </button>
             </div>
             <div className="main__correct-date-box">
-                <span className='main__correct-month'>{correctDate.monthLong}</span>
-                <span className='main__correct-day'>{correctDate.toFormat('dd')}</span>
-                <span className='main__correct-weekday'>{correctDate.weekdayLong}</span>
+                {params.type === 'dynamic' &&
+                    <>
+                        <span className='main__correct-month'>{correctDate.monthLong}</span>
+                        <span className='main__correct-day'>{correctDate.toFormat('dd')}</span>
+                        <span className='main__correct-weekday'>{correctDate.weekdayLong}</span>
+                    </>
+                }
+                {params.type === 'static' &&
+                    <>
+                        <span className='main__correct-week-day'>{params.weekday}</span>
+                    </>
+                }
             </div>
         </div>
     );

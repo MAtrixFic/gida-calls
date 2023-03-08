@@ -37,11 +37,11 @@
     color: #1D232D;
 }
 
-.main__block-chapter{
+.main__block-chapter {
     padding: 0.5rem 1rem;
     border-radius: 10px;
     color: #8C96D0;
-    border:2px solid #E1E2E2;
+    border: 2px solid #E1E2E2;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
     background-color: white;
 }
@@ -73,6 +73,12 @@
     color: #7F8C8C;
     font-weight: 500;
     font-size: 1.4rem;
+}
+
+.main__correct-week-day {
+    font-size: 3rem;
+    font-weight: 600;
+    color: #8896D9;
 }
 
 .main__send-info-button {
@@ -144,12 +150,12 @@
     transition-duration: 0.3s;
 }
 
-.main__lessons-list.active .main__lesson-taking{
+.main__lessons-list.active .main__lesson-taking {
     border-color: #8B96D3;
     color: #8B96D3;
 }
 
-.main__lessons-list.active .main__lesson-taking:hover{
+.main__lessons-list.active .main__lesson-taking:hover {
     background-color: #8B96D3;
     color: white;
 }
@@ -235,10 +241,88 @@
     opacity: 0;
 }
 
-.main__lesson-func-sign{
+.main__lesson-func-sign {
     transition-duration: 0.2s;
 }
 
-.main__button-lesson-func:hover .main__lesson-func-sign{
+.main__button-lesson-func:hover .main__lesson-func-sign {
     fill: #1D232D;
+}
+
+@media all and (max-width: 1400px) {
+    .main__block-name{
+        font-size: 3.4rem;
+    }
+    .main__block-chapter{
+        padding: 0.25rem 0.5rem;
+    }
+    .main__lessons-el{
+        font-size: 1.6rem;
+        padding: 0 1rem;
+    }
+    .main__lessons-panel-box, .main__data-list-box{
+        padding: 1.5rem;
+    }
+}
+
+@media all and (max-width: 1100px){
+    .main__lesson-manager-box{
+        gap: 1rem;
+        grid-template-columns: 1fr minmax(100px, 300px);
+    }
+    .main{
+        padding: 1rem;
+    }
+}
+
+@media all and (orientation: portrait){
+    .main{
+        grid-template-rows: 1fr;
+        grid-template-columns: 1fr;
+    }
+    .main__lesson-manager-box{
+        border-radius: 25px;
+        overflow-y: scroll;
+        height: 100%;
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(50px, 80px);
+        gap: 1rem;
+    }
+    .main__correct-week-day{
+        font-size: 2rem;
+    }
+
+    .main__block-name{
+        font-size: 2rem;
+    }
+    .main__correct-date-box{
+        grid-column: 1/2;
+        grid-row: 1/2;
+    }
+    .main__lessons-panel-box{
+        grid-template-rows: minmax(30px, 45px) 1fr;
+        grid-column: 1/2;
+        grid-row: 2/3;
+    }
+    .main__data-list-box{
+        grid-column: 1/2;
+        grid-row: 3/4;
+        grid-template-rows: minmax(80px, 160px) minmax(60px, 80px) minmax(40px, 60px);
+    }
+    .main__lessons-plus{
+        font-size: 2rem;
+        padding: 1rem;
+    }
+    .main__lessons-el{
+        font-size: 1.5rem;
+        font-weight: 500;
+    }
+    .main__button-lesson-func svg{
+        width: 20px;
+    }
+    .main__lessons-managment{
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(10, 1fr);
+    }
+
 }

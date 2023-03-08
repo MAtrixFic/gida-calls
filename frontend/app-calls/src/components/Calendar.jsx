@@ -1,12 +1,14 @@
 import React from 'react';
 import { DateTime } from 'luxon';
 import { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams, useParams } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group';
 
 import '../styles/calendar.css';
 
 const Calendar = () => {
+
+    const { theme } = useParams(); 
 
     const GetTime = () => {
         let now = DateTime.local();
@@ -87,7 +89,7 @@ const Calendar = () => {
                     <div className={`main__calendar-cells ${upOrDown === 0 ?
                         " " : upOrDown === 1 ? 'up' : 'down'}`} >
                         {new Array(daysInM).fill('').map((_, i) =>
-                            <CellDates index={i} time={time} key={i} />
+                            <CellDates index={i} time={time} key={i} theme={theme}/>
                         )}
                     </div>
                 </div>
@@ -124,7 +126,7 @@ const CellDates = (props) => {
     const time = props.time;
     const index = props.index;
     const timeToday = time.minus({ days: time.day - (index + 1) })
-    const link = `menu/${timeToday.toFormat('dd')}/${timeToday.toFormat('MM')}/${timeToday.year}`;
+    const link = `/main/${props.theme}/dynamic/date/${timeToday.toFormat('dd')}/${timeToday.toFormat('MM')}/${timeToday.year}`;
     const isNow = DateTime.local().setLocale('ru').toFormat('yyyy-MM-dd') === timeToday.toFormat('yyyy-MM-dd');
     function ItsHoliday(event) {
         event.preventDefault();

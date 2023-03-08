@@ -39,7 +39,7 @@ const Layout = () => {
                 </div>
                 <nav className='header__nav-box'>
                     <LinkComponent where="/main/home" nameLink='Домой' icon={home} />
-                    <LinkComponent where="/main/calendar" nameLink='Календарь' icon={calendar} />
+                    <LinkComponent where="/main/menu" nameLink='Меню' icon={calendar} />
                     <LinkComponent where="/main/voting" nameLink='Голосование' icon={voiting} />
                 </nav>
                 <div className='header__exit-box'>

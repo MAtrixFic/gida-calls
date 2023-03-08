@@ -6,21 +6,24 @@ import Layout from './components/Layout';
 import Calendar from './components/Calendar';
 import CalendarDay from './components/CalendarDay';
 import Voting from './components/Voting';
-import CalendarMenu from './components/CalendarMenu';
+import ThemeMenu from './components/ThemeMenu';
 import LessonsManager from './components/LessonsManager';
+import WeekDaysList from './components/WeekDaysList';
 
 function App() {
   return (
     <Routes>
       <Route path='/auth/log' element={<Entrance />} />
       <Route path="/main" element={<Layout />}>
-        <Route path='calendar' element={<Calendar />} />
-        <Route path='voting' element={<Voting />} />
-        <Route path='calendar/menu/:day/:month/:year' element={<CalendarMenu />} />
-        <Route path='/main/calendar/bells/dynamic/:day/:month/:year' element={<CalendarDay />} />
-        <Route path='/main/calendar/lessons/:type/:day/:month/:year' element={<LessonsManager />} />
+        <Route path='menu' element={<ThemeMenu />} />
+        <Route path=':theme/dynamic/calendar' element={<Calendar />} />
+        <Route path=':theme/static/days' element={<WeekDaysList />} />
+        <Route path='bells/:type/date/:day/:month/:year' element={<CalendarDay />} />
+        <Route path='bells/:type/:weekday' element={<CalendarDay />} />
+        <Route path='lessons/:type/date/:day/:month/:year' element={<LessonsManager />} />
+        <Route path='lessons/:type/:weekday' element={<LessonsManager />} />
       </Route>
-      <Route path='*' element={<Navigate to='/main/calendar' replace={true} />} />
+      <Route path='*' element={<Navigate to='/main/menu' replace={true} />} />
     </Routes>
   );
 }

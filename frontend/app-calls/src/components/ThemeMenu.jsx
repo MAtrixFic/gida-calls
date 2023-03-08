@@ -2,19 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import '../styles/calendarmenu.css';
 
-const CalendarMenu = () => {
+const ThemeMenu = () => {
 
-    const { day, month, year } = useParams();
     const [arrayOfChoise] = useState(() => [
         {
             name: 'Звонки',
-            sPath: '#',
-            dPath: `/main/calendar/bells/dynamic/${day}/${month}/${year}`
+            sPath: `/main/bells/static/days`,
+            dPath: `/main/bells/dynamic/calendar`
         },
         {
             name: 'Уроки',
-            sPath: `/main/calendar/lessons/static/${day}/${month}/${year}`,
-            dPath: `/main/calendar/lessons/dynamic/${day}/${month}/${year}`
+            sPath: `/main/lessons/static/days`,
+            dPath: `/main/lessons/dynamic/calendar`
         }]);
     const [countOfArrayOfChoise, setCountOfArrayOfChoise] = useState(() => 0);
     useEffect(() => {
@@ -36,7 +35,7 @@ const CalendarMenu = () => {
     );
 }
 
-export default CalendarMenu;
+export default ThemeMenu;
 
 
 const SettingCell = ({ settingsName, staticPath, dynamicPath }) => {

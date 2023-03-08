@@ -20,11 +20,16 @@ const CalendarDay = () => {
     const [serverIp] = useState(() => SERVERIP.local);
     var [accessToWrite, setAccessToWrite] = useState(() => false); //доступ к изменению полей
     var refInpValue = useRef({ first: {}, second: {} }); //ссылка на поля инпут
-    var [gettingData, setGettingData] = useState(() => GetData('dynamic').then(data => setGettingData(data)));//получение расписания
+    var [gettingData, setGettingData] = useState(() => GetData(String(gotTime.type)).then(data => {
+        data.res === 'empty' ? setGettingData({ first: '00000000', second: '00000000' }) : setGettingData(data)
+    }));//получение расписания
     var [timeList, setTimeList] = useState(() => []);
+
+
 
     useEffect(() => {
         let data = { first: [], second: [] };
+        console.log(gettingData)
         try {
             let indexFirst = 0;
             let indexSecond = 0;
@@ -87,13 +92,23 @@ const CalendarDay = () => {
         if (update) ResetAllTime();
         let prom;
         if (type === 'static') {
-            prom = await fetch(`http://${serverIp}/calendar/${type}?` + new URLSearchParams({
-                weekDay: thisTime.weekdayLong
-            }), {
-                headers: {
-                    "Authorization": localStorage?.auth
-                }
-            });
+            if (gotTime.type === 'static') {
+                prom = await fetch(`http://${serverIp}/calendar/${type}?` + new URLSearchParams({
+                    weekDay: gotTime.weekday
+                }), {
+                    headers: {
+                        "Authorization": localStorage?.auth
+                    }
+                });
+            } else {
+                prom = await fetch(`http://${serverIp}/calendar/${type}?` + new URLSearchParams({
+                    weekDay: thisTime.weekdayLong
+                }), {
+                    headers: {
+                        "Authorization": localStorage?.auth
+                    }
+                });
+            }
         }
         else if (type === 'dynamic') {
             prom = await fetch(`http://${serverIp}/calendar/${type}?` + new URLSearchParams({
@@ -108,6 +123,7 @@ const CalendarDay = () => {
             });
         }
         if (prom.ok) {
+            console.log(await prom.res)
             return await prom.json();
         }
         else if (prom.status === 401) {
@@ -144,14 +160,25 @@ const CalendarDay = () => {
     }
 
     async function SendDate() {
-        let dataOBJ = {
-            date: `${gotTime.year}-${gotTime.month}-${gotTime.day}`,
-            first: '',
-            second: '',
-        };
+        let dataOBJ = {}
+        if (gotTime.type === 'dynamic') {
+            dataOBJ = {
+                date: `${gotTime.year}-${gotTime.month}-${gotTime.day}`,
+                first: '',
+                second: '',
+            };
+        } else if (gotTime.type === 'static') {
+            dataOBJ = {
+                weekday: `${gotTime.weekday}`,
+                first: '',
+                second: '',
+            };
+            console.log(dataOBJ)
+        }
+
         CreateROW(dataOBJ, 'first')
         CreateROW(dataOBJ, 'second')
-        fetch(`http://${serverIp}/calendar/dynamic`, {
+        fetch(`http://${serverIp}/calendar/${gotTime.type}`, {
             headers: {
                 'Content-Type': "application/x-www-form-urlencoded",
                 "Authorization": localStorage?.auth
@@ -200,11 +227,13 @@ const CalendarDay = () => {
                                 index={i + 1} />)}
                     </div>
                 </div>
-                <DateNow _thisTime={thisTime} />
+                <DateNow weekDay={gotTime.weekday} type={gotTime.type} _thisTime={thisTime} />
                 <div className="main__time-manager-buttons">
-                    <div className="main__static-dynamic-box">
-                        <ControlButton method={() => GetData('static', true).then(data => setGettingData(data))} CN='main__standart-time-button' text='static' />
-                        <ControlButton method={() => GetData('dynamic', true).then(data => setGettingData(data))} CN='main__standart-time-button' text='dynamic' />
+                    <div className={`main__static-dynamic-box ${gotTime.type === 'static' && 'static'}`}>
+                        <ControlButton method={() => GetData('static', true).then(data => setGettingData(data))} CN='main__standart-time-button' text={gotTime.type === 'static' ? 'загрузить данные' : 'static'} />
+                        {gotTime.type === 'dynamic' && <ControlButton method={() => GetData('dynamic', true).then(data => {
+                            data.res === 'empty' ? setGettingData({ first: '00000000', second: '00000000' }) : setGettingData(data)
+                        })} CN='main__standart-time-button' text={'dynamic'} />}
                     </div>
                     <ControlButton method={ResetAllTime} CN='main__standart-time-button' text='сбросить' />
                     <ControlButton method={GiveAccess} CN='main__standart-time-button' text='изменить' />

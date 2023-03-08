@@ -82,6 +82,15 @@
     animation: time-born 0.4s backwards;
 }
 
+.main__date-now.one{
+    justify-content: center;
+}
+
+.main__date-week-day {
+    font-size: 4.4rem;
+    font-weight: 600;
+    color: #8896D9;
+}
 
 .main__cell-time.deactive {
     animation: time-dead 0.4s forwards;
@@ -204,6 +213,10 @@
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr;
     gap: 1vh;
+}
+
+.main__static-dynamic-box.static{
+    grid-template-columns: 1fr;
 }
 
 .main__standart-time-button {
@@ -420,13 +433,15 @@
 }
 
 @media all and (orientation: portrait) and (max-width: 500px) {
-    .main__date-now-number{
+    .main__date-now-number {
         font-size: 3.6rem;
     }
-    .main__date-now-month{
+
+    .main__date-now-month {
         font-size: 1.2rem;
     }
-    .main__date-now-tag{
+
+    .main__date-now-tag {
         font-size: 1.3rem;
     }
 }
