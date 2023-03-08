@@ -292,6 +292,9 @@
         grid-template-rows: repeat(8, minmax(30px, 45px));
         grid-auto-rows: minmax(30px, 45px);
     }
+    .main__date-week-day{
+        font-size: 3rem;
+    }
 }
 
 @media all and (max-width: 1050px) {
@@ -322,6 +325,9 @@
 
     .main__cell-time {
         border-radius: 5px;
+    }
+    .main__date-week-day{
+        font-size: 2.5rem;
     }
 }
 
