@@ -43,8 +43,9 @@ async function GetDynamicNow(req, res) {
     const weekDay = timeNow.weekdayLong;
     let row = timeNow.toFormat('ssmmHHddMMyyyy88880755');
     var dbConnection = new ShcoolBell();
-    dbConnection.SelectDynamicSchedule({ year, month, day }).then(dataD => {
-        if (dataD === 'empty') {
+    let convertDate = `${year}-${month}-${day}`;
+    dbConnection.SelectDynamicSchedule(convertDate).then(dataD => {
+        if (dataD === 'error') {
             dbConnection.SelectStaticSchedule(weekDay).then(dataS => {
                 try {
                     res.send(row + dataS[0].firstTime + dataS[0].secondTime)
@@ -63,6 +64,35 @@ async function GetDynamicNow(req, res) {
             }
         }
     })
+}
+
+async function GetDynamicBellsSheduleForTelegram(req, res) {
+    const { date } = req.params
+    var dbConnection = new ShcoolBell();
+    const timeNow = DateTime.local(date.split('-')).setLocale('ru');
+    const weekDay = timeNow.weekdayLong;
+    console.log(weekDay, date)
+    dbConnection.SelectDynamicSchedule(date).then(dataD => {
+        if (dataD === 'error') {
+            dbConnection.SelectStaticSchedule(weekDay).then(dataS => {
+                try {
+                    res.send({first: dataS[0].firstTime, second: dataS[0].secondTime})
+                }
+                catch {
+                    res.sendStatus(406)
+                }
+            })
+        }
+        else {
+            try {
+                res.send({first: dataD[0].firstTime, second: dataD[0].secondTime})
+            }
+            catch {
+                res.sendStatus(406)
+            }
+        }
+    })
+
 }
 
 async function PutDynamic(req, res) {
@@ -146,4 +176,4 @@ async function SetClassShedule(req, res) {
     res.sendStatus(200);
 }
 
-module.exports = { GetDynamic, GetStatic, PutDynamic, GetDynamicNow, GetClasses, GetLessonsList, GetClassShedule, SetClassShedule, PutStatic }
+module.exports = { GetDynamic, GetStatic, PutDynamic, GetDynamicNow, GetClasses, GetLessonsList, GetClassShedule, SetClassShedule, PutStatic, GetDynamicBellsSheduleForTelegram }

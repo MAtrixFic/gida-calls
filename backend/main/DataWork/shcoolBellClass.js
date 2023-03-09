@@ -80,9 +80,8 @@ class ShcoolBell {
         return result;
     }
 
-    async SelectDynamicSchedule({ year, month, day }) {
-        let convertDate = `${year}-${month}-${day}`;
-        const dynamicResult = await this.tables.dynamicdays.select('firstTime, secondTime', `WHERE definiteDate = "${convertDate}"`);
+    async SelectDynamicSchedule(date) {
+        const dynamicResult = await this.tables.dynamicdays.select('firstTime, secondTime', `WHERE definiteDate = "${date}"`);
         if (dynamicResult[0] === undefined) {
             return 'error';
         }
