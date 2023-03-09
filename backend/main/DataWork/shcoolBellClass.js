@@ -72,6 +72,13 @@ class ShcoolBell {
                     name: db_plus.ColTypes.varchar(30)
                 }
             }),
+            telegausers: this.pool.defineTable('telegausers', {
+                columns: {
+                    id: db_plus.ColTypes.int(),
+                    nick: db_plus.ColTypes.varchar(100),
+                    class_id: db_plus.ColTypes.int()
+                }
+            }),
         }
     }
 
@@ -81,7 +88,8 @@ class ShcoolBell {
     }
 
     async SelectDynamicSchedule(date) {
-        const dynamicResult = await this.tables.dynamicdays.select('firstTime, secondTime', `WHERE definiteDate = "${date}"`);
+        console.log(date)
+        const dynamicResult = await this.tables.dynamicdays.select('firstTime, secondTime', `WHERE definiteDate = "${date.year}-${date.month}-${date.day}"`);
         if (dynamicResult[0] === undefined) {
             return 'error';
         }
@@ -91,7 +99,7 @@ class ShcoolBell {
     }
 
     async ReplaceDynamicSchedule({ date, first, second }) {
-        await this.tables.dynamicdays.query(`REPLACE dynamicdays(definiteDate, firstTime, secondTime) VALUES("${date}","${first}","${second}")`).then(res=> console.log(res));
+        await this.tables.dynamicdays.query(`REPLACE dynamicdays(definiteDate, firstTime, secondTime) VALUES("${date}","${first}","${second}")`).then(res => console.log(res));
     }
 
     async ReplaceStaticSchedule({ weekDay, first, second }) {
@@ -171,6 +179,46 @@ class ShcoolBell {
             return 'error'
         }
     }
+
+    async PutTelegramUsers(className, nick) {
+        const classId = await this.tables.schoolclass.select('id', `WHERE number = ${className[0]} and letter = "${className[1]}"`);
+        const result = await this.tables.telegausers.update({ class_id: classId[0].id }, `WHERE nick = "${nick}"`);
+        if (result.affectedRows === 0) {
+            await this.tables.telegausers.insert(`(nick, class_id) VALUES("${nick}","${classId[0].id}")`);
+        }
+    }
+
+    async GetTelegramUser(nick) {
+        try {
+            const class_id = await this.tables.telegausers.select('class_id', `WHERE nick = "${nick}"`)
+            console.log(class_id[0].class_id)
+            const result = await this.tables.schoolclass.select('number, letter', `WHERE id = ${class_id[0].class_id}`)
+            return result
+        }
+        catch {
+            return 'error';
+        }
+    }
+
+    async GetTelegramLessonsShedule(className, date, weekDay) {
+        const classId = await this.tables.schoolclass.select('id', `WHERE number = "${className[0]}" and letter = "${className[1]}"`);
+        console.log(classId[0]['id'], 'class_id')
+        const resultD = await this.tables.dynamiclessons.select('lessons', `WHERE date = "${date}" and class_id = "${classId[0]['id']}"`)
+        if (resultD[0] === undefined) {
+            const resultS = await this.tables.staticlessons.select('lessons', `WHERE weekDay = "${weekDay}" and class_id = "${classId[0]['id']}"`)
+            if(resultS[0] === undefined) {
+                console.log(resultS, resultD)
+                return 'error';
+            }
+            else{
+                return resultS
+            }
+        }
+        else{
+            return resultD
+        }
+
+}
 }
 
 module.exports = ShcoolBell;

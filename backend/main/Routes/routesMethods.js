@@ -76,7 +76,7 @@ async function GetDynamicBellsSheduleForTelegram(req, res) {
         if (dataD === 'error') {
             dbConnection.SelectStaticSchedule(weekDay).then(dataS => {
                 try {
-                    res.send({first: dataS[0].firstTime, second: dataS[0].secondTime})
+                    res.send({ first: dataS[0].firstTime, second: dataS[0].secondTime })
                 }
                 catch {
                     res.sendStatus(406)
@@ -85,7 +85,7 @@ async function GetDynamicBellsSheduleForTelegram(req, res) {
         }
         else {
             try {
-                res.send({first: dataD[0].firstTime, second: dataD[0].secondTime})
+                res.send({ first: dataD[0].firstTime, second: dataD[0].secondTime })
             }
             catch {
                 res.sendStatus(406)
@@ -176,4 +176,44 @@ async function SetClassShedule(req, res) {
     res.sendStatus(200);
 }
 
-module.exports = { GetDynamic, GetStatic, PutDynamic, GetDynamicNow, GetClasses, GetLessonsList, GetClassShedule, SetClassShedule, PutStatic, GetDynamicBellsSheduleForTelegram }
+async function SetTelegramUsers(req, res) {
+    const { nick, className } = req.body;
+    const connectionToTelegaUsers = new ShcoolBell();
+    await connectionToTelegaUsers.PutTelegramUsers(className, nick)
+    res.sendStatus(200);
+}
+
+async function GetTelegaUser(req, res) {
+    const { nick } = req.query;
+    console.log(req.query);
+    const connectionToTelegaUsers = new ShcoolBell();
+    try {
+        await connectionToTelegaUsers.GetTelegramUser(nick).then(data => {
+            res.send(JSON.stringify(data[0].number + data[0].letter))
+        })
+    }
+    catch {
+        res.sendStatus(404)
+    }
+}
+
+async function GetLessonsShedule(req, res) {
+    const { className, date } = req.query;
+    const timeArray = date.split('-')
+    console.log(timeArray)
+    const time = DateTime.local(Number(timeArray[0]),Number(timeArray[1]),Number(timeArray[2])).setLocale('ru');
+    const weekDay = time.weekdayLong;
+    console.log(req.query,weekDay);
+    try {
+        const connectionToTelegaLessons = new ShcoolBell();
+        await connectionToTelegaLessons.GetTelegramLessonsShedule(className , date, weekDay).then(data => {
+            console.log(data, 'data')
+            res.send(data[0].lessons.split(', '))
+        })   
+    }
+    catch {
+        res.sendStatus(404)
+    }
+}
+
+module.exports = { GetDynamic, GetStatic, PutDynamic, GetDynamicNow, GetClasses, GetLessonsList, GetClassShedule, SetClassShedule, PutStatic, GetDynamicBellsSheduleForTelegram, SetTelegramUsers, GetTelegaUser, GetLessonsShedule }
